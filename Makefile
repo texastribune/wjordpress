@@ -1,4 +1,5 @@
 PROJECT=./example_project
+MANAGE=python $(PROJECT)/manage.py
 
 help:
 	@echo "make commands:"
@@ -18,15 +19,12 @@ clean:
 
 
 test:
-#
-#   -s    don't capture stdout
-#
-	python $(PROJECT)/manage.py test -s
+	$(MANAGE) test wjordpress
 
 
 resetdb:
-	python $(PROJECT)/manage.py reset_db --router=default --noinput
-	python $(PROJECT)/manage.py syncdb --noinput
+	$(MANAGE) sqlclear wjordpress | $(MANAGE) dbshell
+	$(MANAGE) syncdb --noinput
 
 
 .PHONY: help clean test resetdb
