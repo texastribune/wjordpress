@@ -52,6 +52,12 @@ class WPSite(models.Model):
         self.description = data['description']
         self.save()
 
+    def sync(self):
+        api = WPApi(self.url)
+        self.save_from_resource(api.index())
+        data = api.posts()
+        WPPost.objects.get_or_create_from_resource_list(self, data)
+
 
 class WPAuthor(WPObjectModel):
     slug = models.SlugField(max_length=255)
@@ -83,6 +89,9 @@ class WPPost(WPObjectModel):
     excerpt = models.TextField(null=True, blank=True)
 
     objects = managers.WPPostManager()
+
+    class Meta(WPObjectModel.Meta):
+        verbose_name = u'post'
 
     def __unicode__(self):
         return self.title
