@@ -134,6 +134,18 @@ LOGGING = {
         'level': os.environ.get('LOGGING_LEVEL', 'WARNING'),
         'handlers': ['console'],
     },
+    'formatters': {
+        'verbose': {
+            'format': ' '.join([
+                '%(levelname)s',
+                '%(asctime)s',
+                '%(name)s',
+                '%(module)s',
+                '%(process)d',
+                '%(thread)d',
+                '%(message)s']),
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -149,12 +161,16 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'project_runpy.ColorizingStreamHandler',
+            'formatter': 'verbose',
         },
     },
     'loggers': {
+        'py.warnings': {
+            # how do i get colored warnings without duplicates?
+            'propagate': False,
+        },
         'django.db.backends': {
             'level': 'DEBUG' if env.get('SQL') else 'INFO',
-            'handlers': ['console'],
             'filters': ['require_debug_true', 'readable_sql'],
             'propagate': False,
         },
