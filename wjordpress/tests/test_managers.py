@@ -20,6 +20,7 @@ class WPPostManagerTest(TestCase):
             post, created = WPPost.objects.get_or_create_from_resource(
                 site, data)
         self.assertTrue(created)
+        self.assertEqual(post.id, 521)
         self.assertEqual(post.author.id, 1)
         self.assertEqual(post.categories.count(), 1)
         self.assertEqual(post.tags.count(), 1)
