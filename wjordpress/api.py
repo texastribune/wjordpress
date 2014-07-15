@@ -37,6 +37,8 @@ class WPApi(object):
     def posts(self):
         """
         Get a list of posts.
+
+        TODO handle pagination via the headers
         """
         return self.get('posts')
 
