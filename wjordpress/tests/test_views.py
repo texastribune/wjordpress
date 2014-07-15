@@ -7,7 +7,7 @@ import mock
 
 from ..factories import WPSiteFactory
 from ..models import WPPost
-from ..views import hookpress_endpoint
+from ..views import HookPressEndpoint
 
 
 BASE_DIR = os.path.dirname(__file__)
@@ -16,9 +16,9 @@ BASE_DIR = os.path.dirname(__file__)
 class HookPressEndpointTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-        self.view = hookpress_endpoint
+        self.view = HookPressEndpoint()
 
-    def test_it_works(self):
+    def test_post_works(self):
         site = WPSiteFactory(url='http://www.foo.com/')
         # assert the post we're about to make doesn't exist
         self.assertFalse(WPPost.objects.filter(wp=site, id=521).exists())
@@ -32,7 +32,7 @@ class HookPressEndpointTest(TestCase):
         with mock.patch('wjordpress.models.WPApi') as MockApi:
             # got to be a better syntax for this
             MockApi.return_value = mock.MagicMock(**{'posts.return_value': data})
-            response = self.view(request)
+            response = self.view.post(request)
         self.assertEqual(response.status_code, 200)
         # assert this post now exists
         self.assertTrue(WPPost.objects.filter(wp=site, id=521).exists())
