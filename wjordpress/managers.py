@@ -6,14 +6,30 @@ import logging
 
 class WPManager(models.Manager):
     def get_or_create_from_resource(self, site, data):
+        """
+        Get or create an instance based on the json.
+        """
         field_names = self.model._meta.get_all_field_names()
         obj_data = {k: v for k, v in data.items() if k in field_names}
         obj_data['synced_at'] = now()
         return self.get_or_create(wp=site, id=data['ID'], defaults=obj_data)
 
+    def get_or_create_from_resource_list(self, site, data):
+        """
+        Get or create multiples from an array json.
+        """
+        logger = logging.getLogger(__name__)
+        for datum in data:
+            logger.debug(self.get_or_create_from_resource(site, datum))
+
 
 class WPPostManager(WPManager):
     def get_or_create_from_resource(self, site, data):
+        """
+        Get or create an instance based on the json.
+
+        The `WPPost` object has some relations that need to be handled special.
+        """
         if 'author' in data:
             from .models import WPUser  # avoid circular imports
             author, __ = WPUser.objects.get_or_create_from_resource(
@@ -41,8 +57,3 @@ class WPPostManager(WPManager):
             # TODO handle tag removal
             obj.tags.add(tag)
         return obj, created
-
-    def get_or_create_from_resource_list(self, site, data):
-        logger = logging.getLogger(__name__)
-        for post in data:
-            logger.debug(self.get_or_create_from_resource(site, post))
