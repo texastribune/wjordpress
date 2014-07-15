@@ -9,6 +9,7 @@ reflect some real schema limit.
 """
 from django.db import models
 
+from . import managers
 from .api import WPApi
 
 
@@ -48,6 +49,8 @@ class WPAuthor(models.Model):
     # first_name
     # last_name
 
+    objects = managers.WPAuthorManager()
+
     def __unicode__(self):
         return self.name
 
@@ -67,6 +70,8 @@ class WPPost(models.Model):
     modified = models.DateTimeField()
     slug = models.SlugField(max_length=255)
     excerpt = models.TextField(null=True, blank=True)
+
+    objects = managers.WPPostManager()
 
     def __unicode__(self):
         return self.title
