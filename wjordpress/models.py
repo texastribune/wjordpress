@@ -59,16 +59,22 @@ class WPSite(models.Model):
         WPPost.objects.get_or_create_from_resource_list(self, data)
 
 
-class WPAuthor(WPObjectModel):
+class WPUser(WPObjectModel):
+    username = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     url = models.URLField(null=True, blank=True,
         help_text='The url the author has set as their homepage.')
-    name = models.CharField(max_length=255)
     avatar = models.URLField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    registered = models.DateTimeField(null=True, blank=True)
     # first_name
     # last_name
 
-    objects = managers.WPAuthorManager()
+    objects = managers.WPUserManager()
+
+    class Meta(WPObjectModel.Meta):
+        verbose_name = u'user'
 
     def __unicode__(self):
         return self.name
@@ -88,6 +94,9 @@ class WPPost(WPObjectModel):
     slug = models.SlugField(max_length=255)
     excerpt = models.TextField(null=True, blank=True)
 
+    author = models.ForeignKey(WPUser, null=True, blank=True)
+
+    # MANAGERS #
     objects = managers.WPPostManager()
 
     class Meta(WPObjectModel.Meta):
