@@ -14,7 +14,7 @@ BASE_DIR = os.path.dirname(__file__)
 class WPPostManagerTest(TestCase):
     def test_it_works(self):
         self.assertIsInstance(WPPost.objects, WPPostManager)
-        # TODO check json into source control
         data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts.json')))
         site = WPSiteFactory()
         WPPost.objects.get_or_create_from_resource_list(site, data)
+        self.assertEqual(WPPost.objects.count(), 8)

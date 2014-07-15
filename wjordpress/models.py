@@ -1,8 +1,9 @@
 """
 
-field names are taken to match the json output (except always lowercase).
-
-`id` field is explicitly added when an `id` field is given from the api.
+field names are taken to match the json output (except always lowercase). This
+includes `id`. For the true primary key, use the `pk` attribute. But hey, you
+were already doing that, right? This makes it so that matching fields between
+the Django models and the JSON resource always match.
 
 `max_length`s of 255 means I just picked an arbitrary high number and does not
 reflect some real schema limit.
@@ -11,6 +12,18 @@ from django.db import models
 
 from . import managers
 from .api import WPApi
+
+
+class WPObjectModel(models.Model):
+    dj_id = models.AutoField(primary_key=True)
+    wp = models.ForeignKey('WPSite')
+    id = models.PositiveIntegerField()
+
+    synced_at = models.DateTimeField(null=True, blank=True)  # TODO
+
+    class Meta:
+        abstract = True
+        unique_together = ('wp', 'id')
 
 
 class WPSite(models.Model):
@@ -28,6 +41,8 @@ class WPSite(models.Model):
     def get_absolute_url(self):
         return self.url
 
+    # CUSTOM METHODS #
+
     def fetch(self):
         api = WPApi(self.url)
         self.save_from_resource(api.index())
@@ -38,9 +53,7 @@ class WPSite(models.Model):
         self.save()
 
 
-class WPAuthor(models.Model):
-    wp = models.ForeignKey(WPSite)
-    id = models.PositiveIntegerField(primary_key=True)
+class WPAuthor(WPObjectModel):
     slug = models.SlugField(max_length=255)
     url = models.URLField(null=True, blank=True,
         help_text='The url the author has set as their homepage.')
@@ -58,9 +71,7 @@ class WPAuthor(models.Model):
         return self.url
 
 
-class WPPost(models.Model):
-    wp = models.ForeignKey(WPSite)
-    id = models.PositiveIntegerField(primary_key=True)
+class WPPost(WPObjectModel):
     title = models.CharField(max_length=255)
     status = models.CharField(max_length=255)  # choices? `publish`
     type = models.CharField(max_length=255)  # choices? `post`
@@ -80,9 +91,7 @@ class WPPost(models.Model):
         return self.link
 
 
-class WPTag(models.Model):
-    wp = models.ForeignKey(WPSite)
-    id = models.PositiveIntegerField(primary_key=True)
+class WPTag(WPObjectModel):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     link = models.URLField()
@@ -94,9 +103,7 @@ class WPTag(models.Model):
         return self.link
 
 
-class WPCategory(models.Model):
-    wp = models.ForeignKey(WPSite)
-    id = models.PositiveIntegerField(primary_key=True)
+class WPCategory(WPObjectModel):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     description = models.TextField(null=True, blank=True)
