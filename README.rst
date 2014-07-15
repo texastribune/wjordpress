@@ -1,51 +1,70 @@
-Django Start App
-================
+Wjordpress
+==========
 
-This is a boilerplate template for starting a standalong Django app. It comes
-with these amazing features:
-* a non-functional setup.py
-* example project for development that's Heroku-ready
-* a testing app for your app built into the example project
-* APL2 license
+Wjordpress is a reusable app for Django_ that allows you to use WordPress_ as
+your editing interface and Django_ for your presentation.
 
-Instructions for once you get started:
+With Wjordpress, you can interact with WordPress content as if it were entered
+in the Django admin. Wjordpress does not pretend to be WordPress and does not
+provide any presentation. After the initial link, it's a "Fire-and-forget"
+system. The Wjordpress Django admin interface is not something you'll have to
+mess with on a daily basis.
 
-Setup
------
-
-::
-
-    pip install -r requirements-dev.txt
+.. _Django: https://www.djangoproject.com/
+.. _WordPress: http://wordpress.org/
 
 
-Using Postgresql instead of Sqlite as your database::
+WordPress Setup
+---------------
 
-    export DATABASE_URL='postgres:///wjordpress'
+Once you have a WordPress site setup, you need to make sure it has the `JSON
+REST API`_ plugin installed and activated. That's it! If you want real-time
+updates, you'll need the HookPress_ plugin *TODO*.
+
+.. _JSON REST API: http://wordpress.org/plugins/json-rest-api/
+.. _HookPress: http://wordpress.org/plugins/hookpress/
 
 
+Django Setup
+------------
 
-Deploying to Heroku
--------------------
+**Install into your environment**::
 
-Create a new app and give it a database::
+    # pip install wjordpress  # TODO
+    pip install https://github.com/texastribune/wjordpress/archive/master.tar.gz
 
-    $ heroku apps:create
-    $ heroku addons:add heroku-postgresql:dev
+**Install into your Django project**::
 
-Promote the database to ``DATABASE_URL``::
+    INSTALLED_APPS = [
+        # ... your other installed apps
+        'wjordpress',
+    ]
 
-    $ heroku config | grep HEROKU_POSTGRESQL
-    HEROKU_POSTGRESQL_RED_URL: postgres://user3123:passkja83kd8@ec2-117-21-174-214.compute-1.amazonaws.com:6212/db982398
-    $ heroku pg:promote RED
+**Create the database tables**::
 
-Install the pgbackups addon::
+    # python manage.py migrate wjordpress  # TODO
+    python manage.py syncdb
 
-    $ heroku addons:add pgbackups
+**Add a WordPress site**:
 
-Migrate data from your local Postgresql to Heroku (https://devcenter.heroku.com/articles/heroku-postgres-import-export)::
+In your Django admin, add a new site in ``Wjordpress -> Sites``:
 
-    $ pg_dump -Fc --no-acl --no-owner wjordpress > wjordpress.dump
+.. image:: images/admin.png
 
-Upload ``wjordpress.dump`` someplace on the Internets and pull it into Heroku::
+Just enter the url to the WordPress blog and save.
 
-    $ heroku pgbackups:restore DATABASE http://example.com/wjordpress.dump
+
+Scenarios
+---------
+
+**Easy peasy lemon squeezy**:
+
+1. Setup a link to a WordPress site
+2. Write a view and template to display WordPress content
+
+**Bring your own models**:
+
+1. Setup a link to a WordPress site
+2. Create a ``post_save`` signal on the Wjordpress models to sync to your own
+   content models
+3. Write a view and template to display your content models
