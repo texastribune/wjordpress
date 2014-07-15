@@ -8,6 +8,9 @@ from .models import (
 )
 
 
+__all__ = ['WPSiteFactory', 'WPPostFactory']
+
+
 class WPSiteFactory(factory.django.DjangoModelFactory):
     FACTORY_FOR = WPSite
 
