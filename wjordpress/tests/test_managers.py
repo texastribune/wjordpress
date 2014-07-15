@@ -12,7 +12,19 @@ BASE_DIR = os.path.dirname(__file__)
 
 
 class WPPostManagerTest(TestCase):
-    def test_it_works(self):
+    def test_get_or_create_from_resource_works(self):
+        self.assertIsInstance(WPPost.objects, WPPostManager)
+        data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts_521.json')))
+        site = WPSiteFactory()
+        with self.assertNumQueries(28):
+            post, created = WPPost.objects.get_or_create_from_resource(
+                site, data)
+        self.assertTrue(created)
+        self.assertEqual(post.author.id, 1)
+        self.assertEqual(post.categories.count(), 1)
+        self.assertEqual(post.tags.count(), 1)
+
+    def test_get_or_create_from_resource_list_works(self):
         self.assertIsInstance(WPPost.objects, WPPostManager)
         data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts.json')))
         site = WPSiteFactory()
