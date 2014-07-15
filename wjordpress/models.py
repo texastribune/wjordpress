@@ -94,6 +94,9 @@ class WPTag(WPObjectModel):
     # MANAGERS #
     objects = managers.WPManager()
 
+    class Meta(WPObjectModel.Meta):
+        verbose_name = u'tag'
+
     def __unicode__(self):
         return self.name
 
@@ -109,6 +112,10 @@ class WPCategory(WPObjectModel):
 
     # MANAGERS #
     objects = managers.WPManager()
+
+    class Meta(WPObjectModel.Meta):
+        verbose_name = u'category'
+        verbose_name_plural = u'categories'
 
     def __unicode__(self):
         return self.name

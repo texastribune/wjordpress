@@ -18,6 +18,16 @@ class WPUserAdmin(admin.ModelAdmin):
 admin.site.register(models.WPUser, WPUserAdmin)
 
 
+class WPCategoryAdmin(admin.ModelAdmin):
+    readonly_fields = ('synced_at', )
+admin.site.register(models.WPCategory, WPCategoryAdmin)
+
+
+class WPTagAdmin(admin.ModelAdmin):
+    readonly_fields = ('synced_at', )
+admin.site.register(models.WPTag, WPTagAdmin)
+
+
 class WPPostAdmin(admin.ModelAdmin):
     readonly_fields = ('synced_at', )
 admin.site.register(models.WPPost, WPPostAdmin)

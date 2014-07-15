@@ -16,7 +16,7 @@ class WPPostManagerTest(TestCase):
         self.assertIsInstance(WPPost.objects, WPPostManager)
         data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts.json')))
         site = WPSiteFactory()
-        with self.assertNumQueries(140):
+        with self.assertNumQueries(170):
             WPPost.objects.get_or_create_from_resource_list(site, data)
         # assert 8 posts were created
         self.assertEqual(WPPost.objects.count(), 8)
