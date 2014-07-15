@@ -68,3 +68,8 @@ Scenarios
 2. Create a ``post_save`` signal on the Wjordpress models to sync to your own
    content models
 3. Write a view and template to display your content models
+
+
+----
+
+How to pronounce "Wjordpress": http://youtu.be/tmyGrk99uzM
