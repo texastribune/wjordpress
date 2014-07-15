@@ -1,6 +1,7 @@
 Django==1.6.5
-
 dj-database-url==0.3.0
+requests==2.3.0
+
 # for Heroku support
 psycopg2==2.5.3
 

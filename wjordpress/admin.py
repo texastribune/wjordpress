@@ -4,5 +4,5 @@ from . import models
 
 
 class WPSiteAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('name', 'description')
 admin.site.register(models.WPSite, WPSiteAdmin)

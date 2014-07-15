@@ -9,16 +9,29 @@ reflect some real schema limit.
 """
 from django.db import models
 
+import requests  # TODO refactor all this logic out of models.py
+
 
 class WPSite(models.Model):
-    url = models.URLField(unique=True)
+    url = models.URLField('URL', unique=True,
+        help_text=u'The URL of the WordPress site.')
     name = models.CharField(max_length=100, null=True, blank=True)
+    description = models.CharField(max_length=100, null=True, blank=True)
+
+    class Meta:
+        verbose_name = u'site'
 
     def __unicode__(self):
         return self.name or self.url
 
     def get_absolute_url(self):
         return self.url
+
+    def fetch(self):
+        data = requests.get(self.url + 'wp-json/').json()
+        self.name = data['name']
+        self.description = data['description']
+        self.save()
 
 
 class WPAuthor(models.Model):
