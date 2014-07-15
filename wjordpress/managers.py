@@ -22,6 +22,18 @@ class WPPostManager(models.Manager):
                 site, data['author'])
             obj_data['author'] = author
         obj_data['author'] = author
+        category_data = data['terms']['category']
+        if category_data:
+            from .models import WPCategory  # avoid circular imports
+            for cat_data in category_data:
+                WPCategory.objects.get_or_create_from_resource(site, cat_data)
+            # TODO setup M2M
+        tags_data = data['terms'].get('post_tag')
+        if tags_data:
+            from .models import WPTag  # avoid circular imports
+            for tag_data in tags_data:
+                WPTag.objects.get_or_create_from_resource(site, tag_data)
+            # TODO setup M2M
         return self.get_or_create(wp=site, id=wp_id, defaults=obj_data)
 
     def get_or_create_from_resource_list(self, site, data):
