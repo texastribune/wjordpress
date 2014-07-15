@@ -7,6 +7,8 @@ This is a simple wrapper; apart from the initial api instance, this only passes
 dicts and json around.
 
 TODO move out here! or use someone else's Python SDK. I'm lazy.
+
+docs: https://github.com/WP-API/WP-API/blob/master/docs/guides/getting-started.md
 """
 import requests
 
@@ -21,7 +23,7 @@ class WPApi(object):
         self.base_url = url.rstrip('/')
 
     def get(self, *args):
-        url = '{}/wp-json/'.format(self.base_url) + '/'.join(args)
+        url = u'{}/wp-json/'.format(self.base_url) + u'/'.join(args)
         response = requests.get(url)
         self.response = response  # store last response as an attribute
         return response.json()
@@ -34,13 +36,20 @@ class WPApi(object):
         """
         return self.get()
 
-    def posts(self):
+    def posts(self, wp_id=None):
         """
         Get a list of posts.
 
+        To get
         TODO handle pagination via the headers
+
+        docs: https://github.com/WP-API/WP-API/blob/master/docs/guides/working-with-posts.md
         """
-        return self.get('posts')
+        if wp_id is None:
+            # get a collection
+            return self.get('posts')
+        else:
+            return self.get('posts', unicode(wp_id))
 
     def users(self):
         """
