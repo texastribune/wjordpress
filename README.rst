@@ -53,6 +53,9 @@ In your Django admin, add a new site in ``Wjordpress -> Sites``:
 
 Just enter the url to the WordPress blog and save.
 
+Currently, there is no automatic syncing (yet). The easiest workaround is to
+put `manage.py wjordpress_fetch` in a cron job.
+
 
 Scenarios
 ---------

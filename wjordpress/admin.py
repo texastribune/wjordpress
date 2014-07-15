@@ -9,7 +9,7 @@ class WPSiteAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         # TODO do this sync async (give celery another shot?)
         obj.save()
-        obj.sync()
+        obj.fetch_all()
 admin.site.register(models.WPSite, WPSiteAdmin)
 
 

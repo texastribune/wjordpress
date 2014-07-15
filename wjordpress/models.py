@@ -15,6 +15,10 @@ from . import managers
 from .api import WPApi
 
 
+###################
+# ABSTRACT MODELS #
+###################
+
 class WPObjectModel(models.Model):
     wp = models.ForeignKey('WPSite')
     id = models.PositiveIntegerField()
@@ -49,7 +53,16 @@ class WPObjectModel(models.Model):
         self.save()
 
 
+##########
+# MODELS #
+##########
+
 class WPSite(models.Model):
+    """
+    This describes the WordPress site you're trying to integrate with.
+
+    We only need the url.
+    """
     url = models.URLField('URL', unique=True,
         help_text=u'The URL of the WordPress site.')
     name = models.CharField(max_length=100, null=True, blank=True)
@@ -66,11 +79,16 @@ class WPSite(models.Model):
 
     # CUSTOM METHODS #
 
+    def save_from_resource(self, data):
+        self.name = data['name']
+        self.description = data['description']
+        self.save()
+
     def fetch(self):
         api = WPApi(self.url)
         self.save_from_resource(api.index())
 
-    def sync(self):
+    def fetch_all(self):
         api = WPApi(self.url)
         self.save_from_resource(api.index())
         data = api.posts()
