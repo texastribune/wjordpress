@@ -14,10 +14,10 @@ admin.site.register(models.WPSite, WPSiteAdmin)
 
 
 class WPUserAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('synced_at', )
 admin.site.register(models.WPUser, WPUserAdmin)
 
 
 class WPPostAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('synced_at', )
 admin.site.register(models.WPPost, WPPostAdmin)

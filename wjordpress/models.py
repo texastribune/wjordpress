@@ -15,11 +15,13 @@ from .api import WPApi
 
 
 class WPObjectModel(models.Model):
-    dj_id = models.AutoField(primary_key=True)
     wp = models.ForeignKey('WPSite')
     id = models.PositiveIntegerField()
 
-    synced_at = models.DateTimeField(null=True, blank=True)  # TODO
+    # bookkeepping
+    dj_id = models.AutoField(primary_key=True)
+    synced_at = models.DateTimeField()  # don't use auto_now for future
+                                        # `bulk_insert` compatibility
 
     class Meta:
         abstract = True
