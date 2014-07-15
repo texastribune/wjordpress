@@ -85,32 +85,6 @@ class WPUser(WPObjectModel):
         return self.url
 
 
-class WPPost(WPObjectModel):
-    title = models.CharField(max_length=255)
-    status = models.CharField(max_length=255)  # choices? `publish`
-    type = models.CharField(max_length=255)  # choices? `post`
-    content = models.TextField(null=True, blank=True)
-    link = models.URLField()
-    date = models.DateTimeField()
-    modified = models.DateTimeField()
-    slug = models.SlugField(max_length=255)
-    excerpt = models.TextField(null=True, blank=True)
-
-    author = models.ForeignKey(WPUser, null=True, blank=True)
-
-    # MANAGERS #
-    objects = managers.WPPostManager()
-
-    class Meta(WPObjectModel.Meta):
-        verbose_name = u'post'
-
-    def __unicode__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        return self.link
-
-
 class WPTag(WPObjectModel):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
@@ -131,6 +105,34 @@ class WPCategory(WPObjectModel):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return self.link
+
+
+class WPPost(WPObjectModel):
+    title = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)  # choices? `publish`
+    type = models.CharField(max_length=255)  # choices? `post`
+    content = models.TextField(null=True, blank=True)
+    link = models.URLField()
+    date = models.DateTimeField()
+    modified = models.DateTimeField()
+    slug = models.SlugField(max_length=255)
+    excerpt = models.TextField(null=True, blank=True)
+
+    author = models.ForeignKey(WPUser, null=True, blank=True)
+    categories = models.ManyToManyField(WPCategory)
+    tags = models.ManyToManyField(WPTag)
+
+    # MANAGERS #
+    objects = managers.WPPostManager()
+
+    class Meta(WPObjectModel.Meta):
+        verbose_name = u'post'
+
+    def __unicode__(self):
+        return self.title
 
     def get_absolute_url(self):
         return self.link
