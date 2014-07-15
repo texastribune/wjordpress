@@ -73,7 +73,8 @@ class WPUser(WPObjectModel):
     # first_name
     # last_name
 
-    objects = managers.WPUserManager()
+    # MANAGERS #
+    objects = managers.WPManager()
 
     class Meta(WPObjectModel.Meta):
         verbose_name = u'user'
@@ -90,6 +91,9 @@ class WPTag(WPObjectModel):
     slug = models.SlugField(max_length=255)
     link = models.URLField()
 
+    # MANAGERS #
+    objects = managers.WPManager()
+
     def __unicode__(self):
         return self.name
 
@@ -102,6 +106,9 @@ class WPCategory(WPObjectModel):
     slug = models.SlugField(max_length=255)
     description = models.TextField(null=True, blank=True)
     link = models.URLField()
+
+    # MANAGERS #
+    objects = managers.WPManager()
 
     def __unicode__(self):
         return self.name
