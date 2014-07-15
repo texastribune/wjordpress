@@ -9,7 +9,7 @@ reflect some real schema limit.
 """
 from django.db import models
 
-import requests  # TODO refactor all this logic out of models.py
+from .api import WPApi
 
 
 class WPSite(models.Model):
@@ -28,13 +28,17 @@ class WPSite(models.Model):
         return self.url
 
     def fetch(self):
-        data = requests.get(self.url + 'wp-json/').json()
+        api = WPApi(self.url)
+        self.save_from_resource(api.index())
+
+    def save_from_resource(self, data):
         self.name = data['name']
         self.description = data['description']
         self.save()
 
 
 class WPAuthor(models.Model):
+    wp = models.ForeignKey(WPSite)
     id = models.PositiveIntegerField(primary_key=True)
     slug = models.SlugField(max_length=255)
     url = models.URLField(null=True, blank=True,
@@ -52,6 +56,7 @@ class WPAuthor(models.Model):
 
 
 class WPPost(models.Model):
+    wp = models.ForeignKey(WPSite)
     id = models.PositiveIntegerField(primary_key=True)
     title = models.CharField(max_length=255)
     status = models.CharField(max_length=255)  # choices? `publish`
@@ -71,6 +76,7 @@ class WPPost(models.Model):
 
 
 class WPTag(models.Model):
+    wp = models.ForeignKey(WPSite)
     id = models.PositiveIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
@@ -84,6 +90,7 @@ class WPTag(models.Model):
 
 
 class WPCategory(models.Model):
+    wp = models.ForeignKey(WPSite)
     id = models.PositiveIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
