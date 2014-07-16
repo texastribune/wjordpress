@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.http import HttpResponse
+from django.views.generic import TemplateView
 
 from django.contrib import admin
 admin.autodiscover()
@@ -19,4 +20,6 @@ urlpatterns = patterns('',
 
     # HACK patterns
     url(r'^favicon.ico$', favicon),
+    url(r'^robots.txt', TemplateView.as_view(
+        content_type='text/plain', template_name='robots.txt')),
 )
