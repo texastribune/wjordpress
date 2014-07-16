@@ -115,6 +115,7 @@ INSTALLED_APPS = [
 
     # app
     'wjordpress',
+    'example_project.viewer',
 
     # support
     'django_extensions',

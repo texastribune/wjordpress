@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  {% for object in object_list %}
+    <article>
+      <h1><a href="{% url 'post_detail' slug=object.slug %}">
+        {{ object.title|safe }}
+      </a></h1>
+      {{ object.excerpt|safe }}
+    </article>
+  {% endfor %}
+{% endblock %}

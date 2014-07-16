@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <article>
+    <header>
+      <h1>
+        {{ object.title|safe }}
+      </h1>
+      <p>
+        By {{ object.author }},
+        {{ object.date|date:"N j, Y" }}
+      </p>
+    </header>
+    {{ object.content|safe }}
+    <footer>
+      <hr>
+      <p>
+        Filed under:
+        [
+          {% for category in object.categories.all %}
+            {{ category }}
+          {% endfor %}
+        ]
+      </p>
+      <p>
+        Tags:
+        [
+          {% for tag in object.tags.all %}
+            {{ tag }}
+          {% endfor %}
+        ]
+      </p>
+    </footer>
+  </article>
+{% endblock %}

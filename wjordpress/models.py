@@ -184,6 +184,8 @@ class WPPost(WPObjectModel):
     objects = managers.WPPostManager()
 
     class Meta(WPObjectModel.Meta):
+        get_latest_by = 'date'
+        ordering = ('-date', )
         verbose_name = u'post'
 
     def __unicode__(self):
