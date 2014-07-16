@@ -10,7 +10,10 @@ TODO move out here! or use someone else's Python SDK. I'm lazy.
 
 docs: https://github.com/WP-API/WP-API/blob/master/docs/guides/getting-started.md
 """
+import logging
 import requests
+
+logger = logging.getLogger(__name__)
 
 
 class WPApi(object):
@@ -26,6 +29,12 @@ class WPApi(object):
         url = u'{}/wp-json/'.format(self.base_url) + u'/'.join(args)
         response = requests.get(url)
         self.response = response  # store last response as an attribute
+        logger.info(u'get {}'.format(url), extra={
+            'headers': response.headers,
+            'status_code': response.status_code,
+            'response_text': response.text,
+            'elapsed': response.elapsed,
+        })
         return response.json()
 
     def index(self):

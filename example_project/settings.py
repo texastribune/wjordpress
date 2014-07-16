@@ -155,10 +155,10 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'project_runpy.ColorizingStreamHandler',
-            'formatter': 'verbose',
+            # 'formatter': 'verbose',
         },
         'sentry': {
-            'level': 'ERROR',
+            'level': 'INFO',
             'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
         },
     },
@@ -186,6 +186,12 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
+        'wjordpress.api': {
+            'level': 'DEBUG',
+            # WISHLIST store in a local database to get cleaner log
+            'handlers': ['console', 'sentry'],
+            'propagate': False,
+        }
     }
 }
 
