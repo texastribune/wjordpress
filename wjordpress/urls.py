@@ -4,6 +4,6 @@ from . import views
 
 
 urlpatterns = patterns('',
-    url(r'^hook/$', views.HookPressEndpoint.as_view(),
+    url(r'^hook/(?P<pk>\d+)/$', views.HookPressEndpoint.as_view(),
         name=u'hook_endpoint'),
 )

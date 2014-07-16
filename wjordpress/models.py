@@ -8,6 +8,7 @@ the Django models and the JSON resource always match.
 `max_length`s of 255 means I just picked an arbitrary high number and does not
 reflect some real schema limit.
 """
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.timezone import now
 
@@ -76,6 +77,12 @@ class WPSite(models.Model):
 
     def get_absolute_url(self):
         return self.url
+
+    # CUSTOM PROPERTIES #
+
+    @property
+    def hook_url(self):
+        return reverse('wjordpress:hook_endpoint', kwargs={'pk': self.pk})
 
     # CUSTOM METHODS #
 

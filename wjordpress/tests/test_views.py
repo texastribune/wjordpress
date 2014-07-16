@@ -32,7 +32,7 @@ class HookPressEndpointTest(TestCase):
         with mock.patch('wjordpress.models.WPApi') as MockApi:
             # got to be a better syntax for this
             MockApi.return_value = mock.MagicMock(**{'posts.return_value': data})
-            response = self.view.post(request)
+            response = self.view.post(request, site.pk)
         self.assertEqual(response.status_code, 200)
         # assert this post now exists
         self.assertTrue(WPPost.objects.filter(wp=site, id=521).exists())

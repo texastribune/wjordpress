@@ -8,15 +8,11 @@ from . import models
 
 class HookPressEndpoint(View):
     @method_decorator(csrf_exempt)
-    def post(self, request, **kwargs):
-        # TODO log this
+    def post(self, request, pk, **kwargs):
+        # TODO add logging to this
         hook_used = request.POST.get('hook')
         if hook_used == 'save_post':
-            # find site
-            # TODO don't care about http(s)
-            # TODO don't care about trailing slashes
-            url, wp_id = request.POST.get('guid').rsplit('?p=', 2)
-            site = models.WPSite.objects.get(url=url)
+            site = models.WPSite.objects.get(pk=pk)
             try:
                 post = models.WPPost.objects.get(
                     wp=site,

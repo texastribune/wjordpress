@@ -4,12 +4,28 @@ from . import models
 
 
 class WPSiteAdmin(admin.ModelAdmin):
+    list_display = ('name', 'url', 'hook')
     readonly_fields = ('name', 'description')
 
     def save_model(self, request, obj, form, change):
         # TODO do this sync async (give celery another shot?)
         obj.save()
         obj.fetch_all()
+
+    # CUSTOM METHODS #
+
+    def hook(self, obj):
+        """
+        This is where an admin can find what url to point the webhook to.
+
+        Doing it as an absolute url lets us cheat and make the browser figure
+        out the host for us.
+
+        Requires HookPress: http://wordpress.org/plugins/hookpress/
+        """
+        return (u'<a href="{}" title="Add a save_post hook with the ID">'
+            'Webhook</a>'.format(obj.hook_url))
+    hook.allow_tags = True
 admin.site.register(models.WPSite, WPSiteAdmin)
 
 
