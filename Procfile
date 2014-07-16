@@ -1,1 +1,1 @@
-web: python example_project/manage.py runserver 0.0.0.0:$PORT --noreload
+web: gunicorn example_project.wsgi --workers=3 --log-file -

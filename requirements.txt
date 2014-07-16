@@ -4,6 +4,8 @@ requests==2.3.0
 
 # for Heroku support
 psycopg2==2.5.3
+gunicorn==19.0.0
+whitenoise==1.0.3
 
 # support
 project-runpy==0.3.0

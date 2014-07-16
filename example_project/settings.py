@@ -7,7 +7,7 @@ from project_runpy import env
 
 
 # default to DEBUG=True
-DEBUG = env.get('DEBUG')
+DEBUG = env.get('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
