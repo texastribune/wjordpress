@@ -118,6 +118,7 @@ INSTALLED_APPS = [
 
     # support
     'django_extensions',
+    'raven.contrib.django.raven_compat',
 ]
 
 LOGGING = {
@@ -156,6 +157,10 @@ LOGGING = {
             'class': 'project_runpy.ColorizingStreamHandler',
             'formatter': 'verbose',
         },
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
     },
     'loggers': {
         'py.warnings': {
@@ -169,6 +174,16 @@ LOGGING = {
         },
         'factory': {
             'level': 'ERROR',
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
             'propagate': False,
         },
     }
