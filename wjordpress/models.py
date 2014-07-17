@@ -166,14 +166,30 @@ class WPCategory(WPObjectModel):
 
 
 class WPPost(WPObjectModel):
+    """
+    WordPress Posts. This is the main content type.
+
+    more about revisions: http://codex.wordpress.org/Revisions
+    """
     title = models.CharField(max_length=255)
-    status = models.CharField(max_length=255, choices=(
+    # http://codex.wordpress.org/Post_Status
+    status = models.CharField(max_length=20, choices=(
+        ('publish', 'Published'),
+        ('future', 'Future'),
+        ('draft', 'Draft'),
+        ('pending', 'Pending'),
+        ('private', 'Private'),
+        ('trash', 'Trash'),
+        ('auto-draft', 'Auto-Draft'),
         ('inherit', 'Inherit'),
-        ('publish', 'Publish'),
     ))
-    type = models.CharField(max_length=255, choices=(
+    # http://codex.wordpress.org/Post_Types
+    type = models.CharField(max_length=20, choices=(
         ('post', 'Post'),
-        ('revision', 'Post Revision'),
+        ('page', 'Page'),
+        ('attachment', 'Attachment'),
+        ('revision', 'Revision'),
+        ('nav_menu_item', 'Navication menu'),
     ))  # choices? `post`
     content = models.TextField(null=True, blank=True)
     link = models.URLField()
@@ -187,6 +203,7 @@ class WPPost(WPObjectModel):
     tags = models.ManyToManyField(WPTag)
 
     parent = models.ForeignKey('self', null=True, blank=True,
+        related_name='revisions',
         help_text=u'Revision parent.')
 
     # MANAGERS #
