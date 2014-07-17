@@ -17,6 +17,9 @@ logger = logging.getLogger(__name__)
 
 
 class WPApi(object):
+    _total = None
+    _total_page = None
+
     def __init__(self, url):
         """
         Initiate connection to a site.
@@ -25,10 +28,19 @@ class WPApi(object):
         """
         self.base_url = url.rstrip('/')
 
+    def interpret_header(self, response, header):
+        """If the header value is an integer, cast it."""
+        out = response.headers.get(header)
+        if out is not None:
+            return int(out)
+        return out
+
     def get(self, *args):
         url = u'{}/wp-json/'.format(self.base_url) + u'/'.join(args)
         response = requests.get(url)
         self.response = response  # store last response as an attribute
+        self._total = self.interpret_header(response, 'X-WP-Total')
+        self._total_pages = self.interpret_header(response, 'X-WP-TotalPages')
         logger.info(u'get {}'.format(url), extra={
             'headers': response.headers,
             'status_code': response.status_code,
