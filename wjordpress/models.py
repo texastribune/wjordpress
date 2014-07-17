@@ -167,8 +167,14 @@ class WPCategory(WPObjectModel):
 
 class WPPost(WPObjectModel):
     title = models.CharField(max_length=255)
-    status = models.CharField(max_length=255)  # choices? `publish`
-    type = models.CharField(max_length=255)  # choices? `post`
+    status = models.CharField(max_length=255, choices=(
+        ('inherit', 'Inherit'),
+        ('publish', 'Publish'),
+    ))
+    type = models.CharField(max_length=255, choices=(
+        ('post', 'Post'),
+        ('revision', 'Post Revision'),
+    ))  # choices? `post`
     content = models.TextField(null=True, blank=True)
     link = models.URLField()
     date = models.DateTimeField()
