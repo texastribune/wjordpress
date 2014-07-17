@@ -30,7 +30,10 @@ Django Setup
 
 **Install into your environment**::
 
-    # pip install wjordpress  # TODO
+    # for the latest "stable"
+    pip install wjordpress
+
+    # if live dangerously
     pip install https://github.com/texastribune/wjordpress/archive/master.tar.gz
 
 **Install into your Django project**::
@@ -63,7 +66,14 @@ Scenarios
 **Easy peasy lemon squeezy**:
 
 1. Setup a link to a WordPress site
-2. Write a view and template to display WordPress content
+2. Write views_ and templates_ to display WordPress content
+
+This is how the `reference project`_ syncs with `my blog`_
+
+.. _views: https://github.com/texastribune/wjordpress/blob/master/example_project/viewer/views.py
+.. _templates: https://github.com/texastribune/wjordpress/tree/master/example_project/templates
+.. _reference project: http://wjordpress.herokuapp.com/
+.. _my blog: http://www.crccheck.com/blog/
 
 **Bring your own models**:
 

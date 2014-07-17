@@ -7,6 +7,7 @@ help:
 	@echo "  make clean   - remove temporary files in .gitignore"
 	@echo "  make test    - run test suite"
 	@echo "  make resetdb - drop and recreate the database"
+	@echo "  make release - publish a new release"
 
 
 clean:
@@ -27,4 +28,9 @@ resetdb:
 	$(MANAGE) syncdb --noinput
 
 
-.PHONY: help clean test resetdb
+# remember you need `pip install wheel`
+release:
+	python setup.py sdist bdist_wheel upload
+
+
+.PHONY: help clean test resetdb release
