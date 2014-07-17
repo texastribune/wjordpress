@@ -186,6 +186,9 @@ class WPPost(WPObjectModel):
     categories = models.ManyToManyField(WPCategory)
     tags = models.ManyToManyField(WPTag)
 
+    parent = models.ForeignKey('self', null=True, blank=True,
+        help_text=u'Revision parent.')
+
     # MANAGERS #
     objects = managers.WPPostManager()
 

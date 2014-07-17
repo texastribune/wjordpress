@@ -3,7 +3,7 @@ import os
 
 from django.test import TestCase
 
-from ..factories import WPSiteFactory
+from ..factories import WPSiteFactory, WPPostFactory
 from ..managers import WPPostManager
 from ..models import WPUser, WPTag, WPCategory, WPPost
 
@@ -24,6 +24,18 @@ class WPPostManagerTest(TestCase):
         self.assertEqual(post.author.id, 1)
         self.assertEqual(post.categories.count(), 1)
         self.assertEqual(post.tags.count(), 1)
+
+    def test_get_or_create_from_resource_handles_revisions_and_parent(self):
+        self.assertIsInstance(WPPost.objects, WPPostManager)
+        data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts_536.json')))
+        site = WPSiteFactory()
+        parent = WPPostFactory(wp=site, id=data['parent']['ID'])
+        with self.assertNumQueries(9):
+            post, created = WPPost.objects.get_or_create_from_resource(
+                site, data)
+        self.assertTrue(created)
+        self.assertEqual(post.id, 536)
+        self.assertEqual(post.parent, parent)
 
     def test_get_or_create_from_resource_list_works(self):
         self.assertIsInstance(WPPost.objects, WPPostManager)
