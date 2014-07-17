@@ -10,9 +10,9 @@ class NavbarMixin(object):
 
 class PostList(NavbarMixin, ListView):
     template_name = 'list.html'
-    model = WPPost
+    queryset = WPPost.objects.filter(status='publish')
 
 
 class PostDetail(NavbarMixin, DetailView):
     template_name = 'detail.html'
-    model = WPPost
+    queryset = WPPost.objects.filter(status='publish')
