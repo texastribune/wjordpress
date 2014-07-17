@@ -20,7 +20,7 @@ clean:
 
 
 test:
-	$(MANAGE) test wjordpress
+	ENVIRONMENT=test $(MANAGE) test wjordpress
 
 
 resetdb:

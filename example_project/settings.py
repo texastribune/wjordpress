@@ -6,6 +6,10 @@ import dj_database_url
 from project_runpy import env
 
 
+# current choices: 'prod', 'test'
+ENVIRONMENT = env.get('ENVIRONMENT', 'prod')
+
+
 # default to DEBUG=True
 DEBUG = env.get('DEBUG', False)
 TEMPLATE_DEBUG = DEBUG
@@ -119,8 +123,9 @@ INSTALLED_APPS = [
 
     # support
     'django_extensions',
-    'raven.contrib.django.raven_compat',
 ]
+if ENVIRONMENT == 'prod':
+    INSTALLED_APPS.append('raven.contrib.django.raven_compat')
 
 LOGGING = {
     'version': 1,
@@ -159,7 +164,7 @@ LOGGING = {
             # 'formatter': 'verbose',
         },
         'sentry': {
-            'level': 'INFO',
+            'level': 'INFO' if ENVIRONMENT == 'prod' else 'CRITICAL',  # HACK
             'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
         },
     },
