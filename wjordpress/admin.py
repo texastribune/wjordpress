@@ -45,5 +45,7 @@ admin.site.register(models.WPTag, WPTagAdmin)
 
 
 class WPPostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'date', 'type', 'status', )
+    list_filter = ('type', 'status', )
     readonly_fields = ('synced_at', )
 admin.site.register(models.WPPost, WPPostAdmin)
