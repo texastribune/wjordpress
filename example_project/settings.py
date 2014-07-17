@@ -188,11 +188,17 @@ LOGGING = {
             'propagate': False,
         },
         'wjordpress.api': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             # WISHLIST store in a local database to get cleaner log
             'handlers': ['console', 'sentry'],
             'propagate': False,
-        }
+        },
+        'wjordpress.views': {
+            'level': 'INFO',
+            # WISHLIST store in a local database to get cleaner log
+            'handlers': ['console', 'sentry'],
+            'propagate': False,
+        },
     }
 }
 
