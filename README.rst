@@ -4,11 +4,12 @@ Wjordpress
 Wjordpress is a reusable app for Django_ that allows you to use WordPress_ as
 your editing interface and Django_ for your presentation.
 
-With Wjordpress, you can interact with WordPress content as if it were entered
-in the Django admin. Wjordpress does not pretend to be WordPress and does not
-provide any presentation. After the initial link, it's a "Fire-and-forget"
-system. The Wjordpress Django admin interface is not something you'll have to
-mess with on a daily basis.
+With Wjordpress, you can interact with WordPress content as if it had been
+entered in the Django admin. Wjordpress does not pretend to be WordPress and
+does not provide any presentation. After the initial link, it's a "Fire-and-
+forget" system. The Wjordpress Django admin interface is not something you'll
+have to mess with on a daily basis. Changes made in WordPress will
+automatically
 
 .. _Django: https://www.djangoproject.com/
 .. _WordPress: http://wordpress.org/
@@ -19,7 +20,7 @@ WordPress Setup
 
 Once you have a WordPress site setup, you need to make sure it has the `JSON
 REST API`_ plugin installed and activated. That's it! If you want real-time
-updates, you'll need the HookPress_ plugin *TODO*.
+updates, you'll need the HookPress_ plugin.
 
 .. _JSON REST API: http://wordpress.org/plugins/json-rest-api/
 .. _HookPress: http://wordpress.org/plugins/hookpress/
@@ -56,8 +57,19 @@ In your Django admin, add a new site in ``Wjordpress -> Sites``:
 
 Just enter the url to the WordPress blog and save.
 
-Currently, there is no automatic syncing (yet). The easiest workaround is to
-put `manage.py wjordpress_fetch` in a cron job.
+
+WordPress HookPress Setup
+`````````````````````````
+
+Setting this up will trigger updates in real-time as you edit content in
+WordPress.
+
+1. Install the plugin
+2. add a ``save_post`` hook to the hook url the Django admin shows for the
+   site.
+3. Make sure the ``ID`` field is sent.
+
+You can also do manual syncs with ``manage.py wjordpress_fetch``.
 
 
 Scenarios
