@@ -9,7 +9,7 @@ setup(
     packages=['wjordpress'],
     include_package_data=True,  # automatically include things from MANIFEST.in
     license='Apache License, Version 2.0',
-    description='Serve WordPress content with Django',
+    description='Django integration with WordPress through the json-rest-api plugin',
     long_description=open('README.rst').read(),
     classifiers=[
         "Development Status :: 3 - Alpha",
