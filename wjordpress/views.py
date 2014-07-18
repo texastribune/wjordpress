@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View
 
 from . import models
+from .api import UserCannotReadException
 
 
 logger = logging.getLogger(__name__)
@@ -31,5 +32,9 @@ class HookPressEndpoint(View):
             except models.WPPost.DoesNotExist:
                 # need to create
                 post = models.WPPost(wp=site, id=request.POST.get('ID'))
-            post.fetch()
+            try:
+                post.fetch()
+            except UserCannotReadException as e:
+                # downgrade exception to INFO
+                logger.info(e)
         return HttpResponse('OK')
