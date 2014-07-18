@@ -205,6 +205,7 @@ class WPPost(WPObjectModel):
     parent = models.ForeignKey('self', null=True, blank=True,
         related_name='revisions',
         help_text=u'Revision parent.')
+    featured_image = models.ForeignKey('self', null=True, blank=True)
 
     # MANAGERS #
     objects = managers.WPPostManager()

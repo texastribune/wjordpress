@@ -37,13 +37,27 @@ class WPPostManager(WPManager):
             data['author'] = author  # XXX mutate original `data` to reference
                                      # something else. I should have made a
                                      # copy, but I'm lazy
-        # 'parent' is either `0` or aanother post json
+        # 'parent' is either `0` or another post json or an int
         parent_data = data.pop('parent')
         if parent_data:
-            # may need to catch DoesNotExist
-            data['parent'] = self.model.objects.get(wp=site, id=parent_data['ID'])
+            if isinstance(parent_data, int):
+                data['parent'] = self.model.objects.get(wp=site, id=parent_data)
+            else:
+                # may need to catch DoesNotExist
+                data['parent'] = self.model.objects.get(wp=site, id=parent_data['ID'])
+        # 'featured_image' is only in the json if it exists
+        featured_image_data = data.pop('featured_image') if 'featured_image' in data else None
+
         obj, created = (super(WPPostManager, self)
             .get_or_create_from_resource(site, data))
+
+        if featured_image_data is not None:
+            # featured_image_data references the post, so this has to happen
+            # after the post is created
+            # TODO need to store that this is an image and attachment_meta
+            featured_image, __ = self.get_or_create_from_resource(site, featured_image_data)
+            obj.featured_image = featured_image
+            obj.save()
         # add many-to-many relations
         if data['terms']:
             category_data = data['terms'].get('category')
