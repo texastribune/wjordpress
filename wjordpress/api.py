@@ -16,6 +16,17 @@ import requests
 logger = logging.getLogger(__name__)
 
 
+class WPApiException(Exception):
+    pass
+
+
+class UserCannotReadException(WPApiException):
+    """
+    Http 401 for when api does not have the auth to read a resource.
+    """
+    message = 'Sorry, you cannot read this post.'
+
+
 class WPApi(object):
     _total = None
     _total_page = None
@@ -38,6 +49,10 @@ class WPApi(object):
     def get(self, *args):
         url = u'{}/wp-json/'.format(self.base_url) + u'/'.join(args)
         response = requests.get(url)
+        if not response.ok:
+            if response.status_code == 401:
+                raise UserCannotReadException()
+            raise WPApiException()
         self.response = response  # store last response as an attribute
         self._total = self.interpret_header(response, 'X-WP-Total')
         self._total_pages = self.interpret_header(response, 'X-WP-TotalPages')
