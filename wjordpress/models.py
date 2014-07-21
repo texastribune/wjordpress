@@ -11,6 +11,7 @@ reflect some real schema limit.
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.timezone import now
+from django_extensions.db.fields.json import JSONField
 
 from . import managers
 from .api import WPApi
@@ -206,6 +207,7 @@ class WPPost(WPObjectModel):
         related_name='revisions',
         help_text=u'Revision parent.')
     featured_image = models.ForeignKey('self', null=True, blank=True)
+    attachment_meta = JSONField(null=True, blank=True)
 
     # MANAGERS #
     objects = managers.WPPostManager()
