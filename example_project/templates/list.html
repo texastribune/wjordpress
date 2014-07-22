@@ -7,6 +7,9 @@
       <h1><a href="{% url 'post_detail' slug=object.slug %}">
         {{ object.title|safe }}
       </a></h1>
+      {% if object.featured_image %}
+        <img src="{{ object.featured_image.images.thumbnail }}" alt="">
+      {% endif %}
       {{ object.excerpt|safe }}
     </article>
   {% endfor %}

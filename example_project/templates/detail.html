@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block head_title %}{{ object.title }}{% endblock %}
+
 
 {% block content %}
   <article>
@@ -12,6 +14,9 @@
         {{ object.date|date:"N j, Y" }}
       </p>
     </header>
+    {% if object.featured_image %}
+      <img src="{{ object.featured_image.images.medium }}" alt="">
+    {% endif %}
     {{ object.content|safe }}
     <footer>
       <hr>

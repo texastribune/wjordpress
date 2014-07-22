@@ -166,6 +166,21 @@ class WPCategory(WPObjectModel):
         return self.link
 
 
+class Image(object):
+    """A simple image model."""
+    url = None
+    width = 0
+    height = 0
+
+    def __init__(self, url, width, height, **kwargs):
+        self.url = url
+        self.width = width
+        self.height = height
+
+    def __repr__(self):
+        return self.url
+
+
 class WPPost(WPObjectModel):
     """
     WordPress Posts. This is the main content type.
@@ -228,3 +243,15 @@ class WPPost(WPObjectModel):
         api = WPApi(self.wp.url)
         data = api.posts(self.id)
         self.save_from_resource(data)
+
+    # CUSTOM PROPERTIES #
+    @property
+    def images(self):
+        if not self.attachment_meta:
+            return None
+        sizes = self.attachment_meta['sizes']
+        return {
+            # 'original': self.attachment_meta  # TODO
+            'thumbnail': Image(**sizes['thumbnail']),
+            'medium': Image(**sizes['medium']),
+        }
