@@ -251,7 +251,5 @@ class WPPost(WPObjectModel):
             return None
         sizes = self.attachment_meta['sizes']
         return {
-            # 'original': self.attachment_meta  # TODO
-            'thumbnail': Image(**sizes['thumbnail']),
-            'medium': Image(**sizes['medium']),
+            k: Image(**sizes[k]) for k in sizes
         }

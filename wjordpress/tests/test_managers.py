@@ -49,8 +49,15 @@ class WPPostManagerTest(TestCase):
         # assert post has a featured image
         self.assertTrue(post.featured_image)
         # assert the featured image has info
-        self.assertTrue(post.featured_image.attachment_meta['width'], 1259)
-        self.assertTrue(post.featured_image.attachment_meta['height'], 485)
+        self.assertEqual(post.featured_image.attachment_meta['width'], 1259)
+        self.assertEqual(post.featured_image.attachment_meta['height'], 485)
+        # assert the original was saved
+        self.assertEqual(post.featured_image.images['original'].width, 1259)
+        self.assertEqual(post.featured_image.images['original'].height, 485)
+        # assert other sizes were saved
+        self.assertIn('large', post.featured_image.images)
+        self.assertIn('medium', post.featured_image.images)
+        self.assertIn('thumbnail', post.featured_image.images)
 
     def test_get_or_create_from_resource_list_works(self):
         self.assertIsInstance(WPPost.objects, WPPostManager)

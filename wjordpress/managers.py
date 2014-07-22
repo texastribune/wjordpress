@@ -45,7 +45,7 @@ class WPPostManager(WPManager):
             else:
                 # may need to catch DoesNotExist
                 data['parent'] = self.model.objects.get(wp=site, id=parent_data['ID'])
-        # 'featured_image' is only in the json if it exists
+        # 'featured_image' isn't always in the resource JSON
         featured_image_data = data.pop('featured_image') if 'featured_image' in data else None
 
         obj, created = (super(WPPostManager, self)
@@ -56,6 +56,14 @@ class WPPostManager(WPManager):
             # after the post is created
             # TODO need to store that this is an image and attachment_meta
             featured_image, __ = self.get_or_create_from_resource(site, featured_image_data)
+            # mutate the data to shim `original` into the `sizes` dict
+            featured_image_data['attachment_meta']['sizes']['original'] = {
+                'file': featured_image_data['attachment_meta']['file'],
+                'width': featured_image_data['attachment_meta']['width'],
+                'height': featured_image_data['attachment_meta']['height'],
+                'mime-type': 'image/jpeg',  # FIXME where do we get this?
+                'url': featured_image_data['source'],
+            }
             obj.featured_image = featured_image
             obj.save()
         # add many-to-many relations
