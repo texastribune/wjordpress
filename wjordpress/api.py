@@ -101,4 +101,3 @@ class WPApi(object):
         Get a list of users.
         """
         return self.get('users')
-
