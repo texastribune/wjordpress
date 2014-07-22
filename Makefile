@@ -28,6 +28,11 @@ resetdb:
 	$(MANAGE) syncdb --noinput
 
 
+heroku_resetdb:
+	heroku pg:reset database --confirm wjordpress
+	heroku run python example_project/manage.py syncdb
+
+
 # remember you need `pip install wheel`
 release:
 	python setup.py sdist bdist_wheel upload
