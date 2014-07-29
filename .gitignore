@@ -18,8 +18,9 @@ docs/_build/
 *.pot
 *.pyc
 .DS_Store
-.sass-cache
 .ipynb_checkpoints
+.sass-cache
+.tox
 
 
 # Heroku generated files
