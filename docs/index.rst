@@ -1,10 +1,13 @@
 Wjordpress
 ==========
 
-.. Contents:
+Contents:
 
-.. .. toctree::
-..    :maxdepth: 2
+.. toctree::
+   :maxdepth: 2
+
+   prior_art
+
 
 Since time immemorial, there has been effort after effort to make the Django
 admin friendlier for writers to use as a CMS interface. The goal always being:
