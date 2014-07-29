@@ -1,22 +1,14 @@
-.. Wjordpress documentation master file, created by
-   sphinx-quickstart on Mon Jul 28 21:31:20 2014.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Wjordpress
+==========
 
-Welcome to Wjordpress's documentation!
-======================================
+.. Contents:
 
-Contents:
+.. .. toctree::
+..    :maxdepth: 2
 
-.. toctree::
-   :maxdepth: 2
+Since time immemorial, there has been effort after effort to make the Django
+admin friendlier for writers to use as a CMS interface. The goal always being:
+"Can we make Django as easy to use as WordPress?"
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+Well, instead of trying to make the Django admin ack like WordPress, why not
+use WordPress and feed the data into Django? That is the goal of Wjordpress.
