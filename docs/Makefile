@@ -175,3 +175,10 @@ pseudoxml:
 	$(SPHINXBUILD) -b pseudoxml $(ALLSPHINXOPTS) $(BUILDDIR)/pseudoxml
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
+
+# If you don't have inotify-tools, install it first: `apt-get install inotify-tools`
+watch:
+	@while true; do \
+	inotifywait --recursive -e modify -e move -e create -e delete \
+	--exclude $(BUILDDIR) . && $(MAKE) --silent html; \
+	done
