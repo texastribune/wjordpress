@@ -124,8 +124,6 @@ INSTALLED_APPS = [
     # support
     'django_extensions',
 ]
-if ENVIRONMENT == 'prod':
-    INSTALLED_APPS.append('raven.contrib.django.raven_compat')
 
 LOGGING = {
     'version': 1,
@@ -164,9 +162,8 @@ LOGGING = {
             # 'formatter': 'verbose',
         },
         'sentry': {
-            'level': 'INFO' if ENVIRONMENT == 'prod' else 'CRITICAL',  # HACK
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-        },
+            'class': 'logging.NullHandler',
+        }
     },
     'loggers': {
         'py.warnings': {
@@ -207,6 +204,14 @@ LOGGING = {
     }
 }
 
+
+if ENVIRONMENT == 'prod':
+    # Install sentry logging hook in production
+    INSTALLED_APPS.append('raven.contrib.django.raven_compat')
+    LOGGING['handlers']['sentry'] = {
+        'level': 'INFO',
+        'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+    }
 
 try:
     from .local_settings import *
