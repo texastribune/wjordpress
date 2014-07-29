@@ -7,6 +7,7 @@ Contents:
    :maxdepth: 2
 
    prior_art
+   quirks
 
 
 Since time immemorial, there has been effort after effort to make the Django
