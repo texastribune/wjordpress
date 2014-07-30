@@ -2,10 +2,11 @@ WordPress Quirks
 ================
 
 
-Revisions
-`````````
+About Revisions
+```````````````
 
 What happens when you update a post?
+""""""""""""""""""""""""""""""""""""
 
 Let's say you have a post (ID=1). When you update it, it's saved and a copy of
 the post is created at the next available id (ID=2). So if you check the
@@ -35,4 +36,8 @@ WPPost.objects.get(id=2)``) and the revision will be linked to the original
 (``revision.parent == original``). So the original ID is retained as the post
 is updated.
 
-When you revert to a revision...
+What happens you restore a revision?
+""""""""""""""""""""""""""""""""""""
+
+When you revert to a revision, this is treated as if you updated the post. So
+the original id remains unchanged and another revision is created.
