@@ -1,0 +1,5 @@
+[run]
+source = wjordpress
+omit = */admin.py, */tests/*, */migrations/*, */management/commands/*
+
+[report]

@@ -22,6 +22,11 @@ clean:
 test:
 	ENVIRONMENT=test $(MANAGE) test wjordpress
 
+coverage:
+	coverage erase
+	ENVIRONMENT=test coverage run $(PROJECT)/manage.py test wjordpress
+	coverage report
+
 
 resetdb:
 	$(MANAGE) sqlclear wjordpress | $(MANAGE) dbshell
