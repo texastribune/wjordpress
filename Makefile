@@ -3,20 +3,23 @@ MANAGE=python $(PROJECT)/manage.py
 
 help:
 	@echo "make commands:"
-	@echo "  make help    - this help"
-	@echo "  make clean   - remove temporary files in .gitignore"
-	@echo "  make test    - run test suite"
-	@echo "  make resetdb - drop and recreate the database"
-	@echo "  make release - publish a new release"
+	@echo "  make help     - this help"
+	@echo "  make clean    - remove temporary files in .gitignore"
+	@echo "  make test     - run test suite"
+	@echo "  make coverage - run coverage"
+	@echo "  make resetdb  - drop and recreate the database"
+	@echo "  make release  - publish a new release"
 
 
 clean:
-	find -name "*.pyc" -delete
+	find . -name "*.pyc" -delete
 	find . -name ".DS_Store" -delete
 	rm -rf MANIFEST
 	rm -rf build
 	rm -rf dist
+	rm -rf htmlcov
 	rm -rf *.egg-info
+	coverage erase
 
 
 test:
@@ -41,6 +44,3 @@ heroku_resetdb:
 # remember you need `pip install wheel`
 release:
 	python setup.py sdist bdist_wheel upload
-
-
-.PHONY: help clean test resetdb release
