@@ -3,6 +3,8 @@ Wjordpress
 
 .. image:: https://travis-ci.org/texastribune/wjordpress.png
    :target: https://travis-ci.org/texastribune/wjordpress
+.. image:: https://coveralls.io/repos/texastribune/wjordpress/badge.png
+   :target: https://coveralls.io/r/texastribune/wjordpress
 
 Wjordpress is a reusable app for Django_ that allows you to use WordPress_ as
 your editing interface and Django_ for your presentation.
