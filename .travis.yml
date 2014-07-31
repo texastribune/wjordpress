@@ -1,0 +1,7 @@
+language: python
+env:
+  - TOX_ENV=py27django16
+  - TOX_ENV=py33django16
+  - TOX_ENV=py34django16
+install: "pip install tox"
+script: tox -e $TOX_ENV
