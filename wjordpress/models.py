@@ -167,7 +167,7 @@ class WPCategory(WPObjectModel):
 
 
 class Image(object):
-    """A simple image model."""
+    """A simple image object."""
     url = None
     width = 0
     height = 0
@@ -190,22 +190,22 @@ class WPPost(WPObjectModel):
     title = models.CharField(max_length=255)
     # http://codex.wordpress.org/Post_Status
     status = models.CharField(max_length=20, choices=(
-        ('publish', 'Published'),
-        ('future', 'Future'),
+        ('auto-draft', 'Auto-Draft'),
         ('draft', 'Draft'),
+        ('future', 'Future'),
+        ('inherit', 'Inherit'),
         ('pending', 'Pending'),
         ('private', 'Private'),
+        ('publish', 'Published'),
         ('trash', 'Trash'),
-        ('auto-draft', 'Auto-Draft'),
-        ('inherit', 'Inherit'),
     ))
     # http://codex.wordpress.org/Post_Types
     type = models.CharField(max_length=20, choices=(
-        ('post', 'Post'),
-        ('page', 'Page'),
         ('attachment', 'Attachment'),
-        ('revision', 'Revision'),
         ('nav_menu_item', 'Navication menu'),
+        ('page', 'Page'),
+        ('post', 'Post'),
+        ('revision', 'Revision'),
     ))  # choices? `post`
     content = models.TextField(null=True, blank=True)
     link = models.URLField()
