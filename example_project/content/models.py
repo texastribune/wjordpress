@@ -18,6 +18,8 @@ class Post(models.Model):
     text = models.TextField(null=True, blank=True)
     summary = models.TextField(null=True, blank=True)
 
+    lede_art = models.ForeignKey('RemoteImage', null=True, blank=True)
+
     # for wjordpress integration
     wppost = models.ForeignKey(WPPost, null=True, blank=True, related_name='+',
         unique=True, verbose_name='Original WP Post')

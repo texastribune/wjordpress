@@ -31,6 +31,10 @@ class ItWorks(TestCase):
         self.assertEqual(Post.objects.count(), 8)
         self.assertEqual(RemoteImage.objects.count(), 1)
 
+        image = RemoteImage.objects.get()
+        # assert the image is associated with a post
+        self.assertEqual(image.post_set.count(), 1)
+
         # make sure updating works
         wppost = WPPost.objects.latest('date')
         post = Post.objects.get(wppost=wppost)

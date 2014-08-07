@@ -1,5 +1,5 @@
 def post_to_post(wppost, created):
-    from .models import Post  # avoid circular import
+    from .models import Post, RemoteImage  # avoid circular import
     defaults = dict(
         headline=wppost.title,
         slug=wppost.slug,
@@ -10,6 +10,13 @@ def post_to_post(wppost, created):
         summary=wppost.excerpt,
         wppost=wppost,
     )
+    if wppost.featured_image:
+        try:
+            image = RemoteImage.objects.get(wppost=wppost.featured_image)
+            defaults['lede_art'] = image
+        except RemoteImage.DoesNotExist:
+            # next time
+            pass
     if created:
         Post.objects.create(**defaults)
     else:
@@ -19,16 +26,26 @@ def post_to_post(wppost, created):
 
 
 def post_to_image(wppost, created):
-    from .models import RemoteImage  # avoid circular import
+    from .models import Post, RemoteImage  # avoid circular import
     defaults = dict(
         src=wppost.attachment_meta['sizes'].values()[0]['url'],
+        wppost=wppost,
     )
     if created:
-        RemoteImage.objects.create(**defaults)
+        image = RemoteImage.objects.create(**defaults)
     else:
         image = RemoteImage.objects.get(wppost=wppost)
         image.__dict__.update(defaults)
         image.save()
+    if wppost.parent:
+        # associate lede art
+        try:
+            post = Post.objects.get(wppost=wppost.parent)
+            post.lede_art = image
+            post.save()
+        except Post.DoesNotExist:
+            # next time
+            pass
 
 
 def sync_post(sender, instance, created, **kwargs):
