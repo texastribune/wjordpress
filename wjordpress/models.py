@@ -222,7 +222,7 @@ class WPPost(WPObjectModel):
         related_name='revisions',
         help_text=u'Revision parent.')
     featured_image = models.ForeignKey('self', null=True, blank=True)
-    attachment_meta = JSONField(null=True, blank=True)
+    attachment_meta = JSONField(null=True, blank=True)  # WISHLIST no ext deps
 
     # MANAGERS #
     objects = managers.WPPostManager()

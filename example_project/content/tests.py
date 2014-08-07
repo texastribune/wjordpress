@@ -14,7 +14,7 @@ from django.test import TestCase
 from wjordpress.factories import WPSiteFactory
 from wjordpress.models import WPPost
 
-from .models import Post
+from .models import Post, RemoteImage
 
 
 BASE_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'wjordpress', 'tests')
@@ -29,6 +29,7 @@ class ItWorks(TestCase):
         self.assertEqual(WPPost.objects.count(), 9)
 
         self.assertEqual(Post.objects.count(), 8)
+        self.assertEqual(RemoteImage.objects.count(), 1)
 
         # make sure updating works
         wppost = WPPost.objects.latest('date')

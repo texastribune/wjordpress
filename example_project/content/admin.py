@@ -9,3 +9,6 @@ class PostAdmin(admin.ModelAdmin):
     readonly_fields = ('wppost', )
 
 admin.site.register(models.Post, PostAdmin)
+
+
+admin.site.register(models.RemoteImage)

@@ -28,4 +28,15 @@ class Post(models.Model):
     def __unicode__(self):
         return self.headline
 
+
+class RemoteImage(models.Model):
+    src = models.URLField()
+
+    # for wjordpress integration
+    wppost = models.ForeignKey(WPPost, null=True, blank=True, related_name='+',
+        unique=True, verbose_name='Original WP Post')
+
+    def __unicode__(self):
+        return self.src
+
 post_save.connect(sync_post, sender=WPPost)
