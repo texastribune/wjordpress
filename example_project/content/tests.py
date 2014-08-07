@@ -29,3 +29,12 @@ class ItWorks(TestCase):
         self.assertEqual(WPPost.objects.count(), 9)
 
         self.assertEqual(Post.objects.count(), 8)
+
+        # make sure updating works
+        wppost = WPPost.objects.latest('date')
+        post = Post.objects.get(wppost=wppost)
+        self.assertNotEqual(post.headline, 'foo')
+        wppost.title = 'foo'
+        wppost.save()
+        post = Post.objects.get(wppost=wppost)
+        self.assertEqual(post.headline, 'foo')
