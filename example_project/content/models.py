@@ -20,7 +20,7 @@ class Post(models.Model):
 
     # for wjordpress integration
     wppost = models.ForeignKey(WPPost, null=True, blank=True, related_name='+',
-        unique=True)
+        unique=True, verbose_name='Original WP Post')
 
     def __unicode__(self):
         return self.headline

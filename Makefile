@@ -32,6 +32,7 @@ coverage:
 
 
 resetdb:
+	$(MANAGE) sqlclear content | $(MANAGE) dbshell
 	$(MANAGE) sqlclear wjordpress | $(MANAGE) dbshell
 	$(MANAGE) syncdb --noinput
 

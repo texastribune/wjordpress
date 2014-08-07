@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from . import models
+
+
+class PostAdmin(admin.ModelAdmin):
+    readonly_fields = ('wppost', )
+
+admin.site.register(models.Post, PostAdmin)
