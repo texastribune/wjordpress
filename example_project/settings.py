@@ -119,6 +119,7 @@ INSTALLED_APPS = [
 
     # app
     'wjordpress',
+    'example_project.content',
     'example_project.viewer',
 
     # support
