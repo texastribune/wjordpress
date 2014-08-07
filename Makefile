@@ -28,7 +28,7 @@ test:
 coverage:
 	coverage erase
 	ENVIRONMENT=test coverage run $(PROJECT)/manage.py test wjordpress
-	coverage report
+	coverage report --show-missing
 
 
 resetdb:

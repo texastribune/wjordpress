@@ -35,7 +35,7 @@ class WPObjectModel(models.Model):
         unique_together = ('wp', 'id')
 
     # CUSTOM METHODS #
-    def fetch(self):
+    def fetch(self):  # pragma: no cover
         """
         Fetch this object from the api and update.
         """
