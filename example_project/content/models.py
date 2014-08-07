@@ -22,6 +22,9 @@ class Post(models.Model):
     wppost = models.ForeignKey(WPPost, null=True, blank=True, related_name='+',
         unique=True, verbose_name='Original WP Post')
 
+    class Meta:
+        ordering = ('-pub_date', )
+
     def __unicode__(self):
         return self.headline
 

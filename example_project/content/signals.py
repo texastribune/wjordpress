@@ -6,7 +6,7 @@ def sync_post(sender, instance, created, **kwargs):
     defaults = dict(
         headline=instance.title,
         slug=instance.slug,
-        # author=unicode(instance.author),  # probably won't work, race condition
+        author=unicode(instance.author),  # not python3 compatible
         pub_status='P',  # FIXME
         pub_date=instance.date,
         text=instance.content,
