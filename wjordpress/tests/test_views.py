@@ -1,10 +1,10 @@
 import json
 import os
 
-from django.test import TestCase
 from django.test.client import RequestFactory
 import mock
 
+from . import WPTestCase
 from ..factories import WPSiteFactory
 from ..models import WPPost
 from ..views import HookPressEndpoint
@@ -13,7 +13,7 @@ from ..views import HookPressEndpoint
 BASE_DIR = os.path.dirname(__file__)
 
 
-class HookPressEndpointTest(TestCase):
+class HookPressEndpointTest(WPTestCase):
     def setUp(self):
         self.factory = RequestFactory()
         self.view = HookPressEndpoint()

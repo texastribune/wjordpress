@@ -1,15 +1,14 @@
 import json
 import os
 
-from django.test import TestCase
-
+from . import WPTestCase
 from ..factories import WPSiteFactory, WPPostFactory
 
 
 BASE_DIR = os.path.dirname(__file__)
 
 
-class WPObjectModelTest(TestCase):
+class WPObjectModelTest(WPTestCase):
     def test_save_from_resource_works(self):
         # WISHLIST assert WPPostFactory.save_from_resource is from WPObjectModel
         post = WPPostFactory()
@@ -21,7 +20,7 @@ class WPObjectModelTest(TestCase):
         self.assertTrue(post.title)
 
 
-class WPSiteTest(TestCase):
+class WPSiteTest(WPTestCase):
     def test_get_absolute_url_works(self):
         site = WPSiteFactory()
         self.assertTrue(site.get_absolute_url())
