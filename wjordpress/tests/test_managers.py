@@ -16,14 +16,14 @@ class WPPostManagerTest(TestCase):
         self.assertIsInstance(WPPost.objects, WPPostManager)
         data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts_521.json')))
         site = WPSiteFactory()
-        with self.assertNumQueries(28):
+        with self.assertNumQueries(32):
             post, created = WPPost.objects.get_or_create_from_resource(
                 site, data)
         self.assertTrue(created)
         self.assertEqual(post.id, 521)
         self.assertEqual(post.author.id, 1)
-        self.assertEqual(post.categories.count(), 1)
-        self.assertEqual(post.tags.count(), 1)
+        self.assertEqual(post.categories.count(), 2)
+        self.assertEqual(post.tags.count(), 2)
 
     def test_get_or_create_from_resource_handles_revisions_and_parent(self):
         self.assertIsInstance(WPPost.objects, WPPostManager)
@@ -41,7 +41,7 @@ class WPPostManagerTest(TestCase):
         self.assertIsInstance(WPPost.objects, WPPostManager)
         data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts_502.json')))
         site = WPSiteFactory()
-        with self.assertNumQueries(35):
+        with self.assertNumQueries(39):
             post, created = WPPost.objects.get_or_create_from_resource(
                 site, data)
         self.assertTrue(created)
@@ -63,7 +63,7 @@ class WPPostManagerTest(TestCase):
         self.assertIsInstance(WPPost.objects, WPPostManager)
         data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts.json')))
         site = WPSiteFactory()
-        with self.assertNumQueries(177):
+        with self.assertNumQueries(215):
             WPPost.objects.get_or_create_from_resource_list(site, data)
         # assert 8 posts were created
         self.assertEqual(WPPost.objects.count(), 9)

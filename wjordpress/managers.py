@@ -71,17 +71,17 @@ class WPPostManager(WPManager):
             category_data = data['terms'].get('category')
             if category_data:
                 from .models import WPCategory  # avoid circular imports
+                # TODO handle category removal
                 for cat_data in category_data:
                     cat, __ = WPCategory.objects.get_or_create_from_resource(
                         site, cat_data)
-                # TODO handle category removal
-                obj.categories.add(cat)
+                    obj.categories.add(cat)
             tags_data = data['terms'].get('post_tag')
             if tags_data:
                 from .models import WPTag  # avoid circular imports
+                # TODO handle tag removal
                 for tag_data in tags_data:
                     tag, __ = WPTag.objects.get_or_create_from_resource(
                         site, tag_data)
-                # TODO handle tag removal
-                obj.tags.add(tag)
+                    obj.tags.add(tag)
         return obj, created
