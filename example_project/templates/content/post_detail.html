@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head_title %}{{ object.headline }}{% endblock %}
+
+
+{% block content %}
+  <article>
+    <header>
+      <h1>
+        {{ object.headline|safe }}
+      </h1>
+      <p>
+        By {{ object.author }},
+        {{ object.pub_date|date:"N j, Y" }}
+      </p>
+    </header>
+    {% if object.lede_art %}
+      <img src="{{ object.lede_art.wppost.images.medium }}" alt="">
+    {% endif %}
+    {{ object.text|safe }}
+    <footer>
+      <hr>
+    </footer>
+  </article>
+{% endblock %}

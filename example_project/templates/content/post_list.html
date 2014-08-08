@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  {% for object in object_list %}
+    <article>
+      <h1><a href="{{ object.get_absolute_url }}">
+        {{ object.headline|safe }}
+      </a></h1>
+      {% if object.lede_art %}
+        <img src="{{ object.lede_art.wppost.images.thumbnail }}" alt="">
+      {% endif %}
+      {{ object.summary|safe }}
+    </article>
+  {% endfor %}
+{% endblock %}

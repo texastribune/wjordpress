@@ -215,14 +215,14 @@ class WPPost(WPObjectModel):
     excerpt = models.TextField(null=True, blank=True)
 
     author = models.ForeignKey(WPUser, null=True, blank=True)
-    categories = models.ManyToManyField(WPCategory)
-    tags = models.ManyToManyField(WPTag)
+    categories = models.ManyToManyField(WPCategory, blank=True)
+    tags = models.ManyToManyField(WPTag, blank=True)
 
     parent = models.ForeignKey('self', null=True, blank=True,
         related_name='revisions',
         help_text=u'Revision parent.')
     featured_image = models.ForeignKey('self', null=True, blank=True)
-    attachment_meta = JSONField(null=True, blank=True)
+    attachment_meta = JSONField(null=True, blank=True)  # WISHLIST no ext deps
 
     # MANAGERS #
     objects = managers.WPPostManager()
