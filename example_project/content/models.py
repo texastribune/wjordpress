@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from wjordpress.models import WPPost
@@ -29,6 +30,9 @@ class Post(models.Model):
 
     def __unicode__(self):
         return self.headline
+
+    def get_absolute_url(self):
+        return reverse('content:post_detail', kwargs={'slug': self.slug})
 
 
 class RemoteImage(models.Model):
