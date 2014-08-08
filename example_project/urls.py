@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     url(r'^', include('wjordpress.urls',
         namespace='wjordpress', app_name='wjordpress')),
 
-    url(r'^', include('example_project.viewer.urls')),
+    url(r'^1/', include('example_project.viewer.urls')),
 
     # HACK patterns
     url(r'^favicon.ico$', favicon),
