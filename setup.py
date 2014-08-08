@@ -11,6 +11,9 @@ setup(
     license='Apache License, Version 2.0',
     description='Django integration with WordPress through the json-rest-api plugin',
     long_description=open('README.rst').read(),
+    requires=[
+        'six>=1.0.0',  # works in tox
+    ],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Framework :: Django",

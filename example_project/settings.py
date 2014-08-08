@@ -123,8 +123,11 @@ INSTALLED_APPS = [
     'example_project.viewer',
 
     # support
-    'django_extensions',
+    # 'django_extensions',
 ]
+
+if ENVIRONMENT != 'test':
+    INSTALLED_APPS.append('django_extensions')
 
 LOGGING = {
     'version': 1,
