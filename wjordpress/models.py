@@ -11,10 +11,10 @@ reflect some real schema limit.
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.timezone import now
-from django_extensions.db.fields.json import JSONField
 
 from . import managers
 from .api import WPApi
+from .dj_exten_jsonfield import JSONField
 
 
 ###################
