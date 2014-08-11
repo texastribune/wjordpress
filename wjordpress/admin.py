@@ -49,3 +49,10 @@ class WPPostAdmin(admin.ModelAdmin):
     list_filter = ('type', 'status', )
     readonly_fields = ('synced_at', )
 admin.site.register(models.WPPost, WPPostAdmin)
+
+
+class WPLogAdmin(admin.ModelAdmin):
+    list_display = ('timestamp', 'wp', 'action', )
+    list_filter = ('wp', 'action', )
+    readonly_fields = ('wp', 'timestamp', 'action', 'body', )
+admin.site.register(models.WPLog, WPLogAdmin)

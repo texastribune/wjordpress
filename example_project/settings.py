@@ -184,25 +184,13 @@ LOGGING = {
             'propagate': False,
         },
         'raven': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'handlers': ['console'],
             'propagate': False,
         },
         'sentry.errors': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'handlers': ['console'],
-            'propagate': False,
-        },
-        'wjordpress.api': {
-            'level': 'INFO',
-            # WISHLIST store in a local database to get cleaner log
-            'handlers': ['console', 'sentry'],
-            'propagate': False,
-        },
-        'wjordpress.views': {
-            'level': 'INFO',
-            # WISHLIST store in a local database to get cleaner log
-            'handlers': ['console', 'sentry'],
             'propagate': False,
         },
     }
@@ -213,7 +201,7 @@ if ENVIRONMENT == 'prod':
     # Install sentry logging hook in production
     INSTALLED_APPS.append('raven.contrib.django.raven_compat')
     LOGGING['handlers']['sentry'] = {
-        'level': 'INFO',
+        'level': 'ERROR',
         'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
     }
 

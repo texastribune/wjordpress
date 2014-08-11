@@ -69,6 +69,8 @@ class WPSite(models.Model):
         help_text=u'The URL of the WordPress site.')
     name = models.CharField(max_length=100, null=True, blank=True)
     description = models.CharField(max_length=100, null=True, blank=True)
+    enable_log = models.BooleanField(default=True,
+        help_text='Log requests')
 
     class Meta:
         verbose_name = u'site'
@@ -95,12 +97,14 @@ class WPSite(models.Model):
     def fetch(self):
         api = WPApi(self.url)
         self.save_from_resource(api.index())
+        WPLog.objects.push(self, 'fetch', api.response.text)
 
     def fetch_all(self):
         api = WPApi(self.url)
         self.save_from_resource(api.index())
         data = api.posts()
         WPPost.objects.get_or_create_from_resource_list(self, data)
+        WPLog.objects.push(self, 'fetch_all', api.response.text)
 
 
 class WPUser(WPObjectModel):
@@ -243,6 +247,7 @@ class WPPost(WPObjectModel):
         api = WPApi(self.wp.url)
         data = api.posts(self.id)
         self.save_from_resource(data)
+        WPLog.objects.push(self.wp, 'fetch', api.response.text)
 
     # CUSTOM PROPERTIES #
     @property
@@ -253,3 +258,21 @@ class WPPost(WPObjectModel):
         return {
             k: Image(**sizes[k]) for k in sizes
         }
+
+
+class WPLog(models.Model):
+    """Log api communications."""
+    wp = models.ForeignKey('WPSite')
+    timestamp = models.DateTimeField(auto_now_add=True)
+    action = models.CharField(max_length=30)  # TODO use choices so it's easier to filter in admin
+    body = models.TextField(default=u'')
+
+    # MANAGERS #
+    objects = managers.WPLogManager()
+
+    def __unicode__(self):
+        return u'{} {}'.format(self.wp, self.timestamp)
+
+    class Meta:
+        ordering = ('-timestamp', )
+        verbose_name = 'log'

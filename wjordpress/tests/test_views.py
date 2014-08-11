@@ -6,7 +6,7 @@ import mock
 
 from . import WPTestCase
 from ..factories import WPSiteFactory
-from ..models import WPPost
+from ..models import WPPost, WPLog
 from ..views import HookPressEndpoint
 
 
@@ -36,3 +36,15 @@ class HookPressEndpointTest(WPTestCase):
         self.assertEqual(response.status_code, 200)
         # assert this post now exists
         self.assertTrue(WPPost.objects.filter(wp=site, id=521).exists())
+
+    def test_post_creates_log(self):
+        # assert we started with no log entries
+        self.assertEqual(WPLog.objects.count(), 0)
+        site = WPSiteFactory(url='http://www.foo.com/')
+        request = self.factory.post('/foo/', {
+            'foo': 'bar',
+        })
+        response = self.view.post(request, site.pk)
+        self.assertEqual(response.status_code, 200)
+        # assert log entry was created
+        self.assertTrue(WPLog.objects.count())

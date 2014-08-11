@@ -85,3 +85,11 @@ class WPPostManager(WPManager):
                         site, tag_data)
                     obj.tags.add(tag)
         return obj, created
+
+
+class WPLogManager(models.Manager):
+    def push(self, wp, action, body=u''):
+        """Generic way to create a log entry."""
+        if not wp.enable_log:
+            return
+        self.create(wp=wp, action=action, body=body)
