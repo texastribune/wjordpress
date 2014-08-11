@@ -69,6 +69,8 @@ class WPSite(models.Model):
         help_text=u'The URL of the WordPress site.')
     name = models.CharField(max_length=100, null=True, blank=True)
     description = models.CharField(max_length=100, null=True, blank=True)
+    enable_log = models.BooleanField(default=True,
+        help_text='Log requests')
 
     class Meta:
         verbose_name = u'site'
@@ -253,3 +255,9 @@ class WPPost(WPObjectModel):
         return {
             k: Image(**sizes[k]) for k in sizes
         }
+
+
+class WPLog(models.Model):
+    """Log api communications."""
+    wp = models.ForeignKey('WPSite')
+    timestamp = models.DateTimeField(auto_now_add=True)
