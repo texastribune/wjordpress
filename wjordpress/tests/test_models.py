@@ -90,11 +90,23 @@ class WPCategoryTest(WPTestCase):
 
 
 class WPPostTest(WPTestCase):
+    def setUp(self):
+        self.post = WPPostFactory()
+        super(WPPostTest, self).setUp()
+
     def test_get_absolute_url_works(self):
-        post = WPPostFactory()
-        self.assertTrue(post.get_absolute_url())
+        self.assertTrue(self.post.get_absolute_url())
 
     def test_images_works(self):
         # assert if post has no meta, it has no images
-        post = WPPostFactory()
-        self.assertIsNone(post.images)
+        self.assertIsNone(self.post.images)
+
+    def test_fetch_creates_log(self):
+        # assert we started with no log entries
+        self.assertEqual(WPLog.objects.count(), 0)
+        with mock.patch('wjordpress.models.WPApi') as mock_api:
+            mock_api.return_value = mock_api  # simplify the mock
+            mock_api.posts.return_value = {}
+            self.post.fetch()
+        # assert log entry was created
+        self.assertTrue(WPLog.objects.count())

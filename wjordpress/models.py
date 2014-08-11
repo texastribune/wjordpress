@@ -251,6 +251,9 @@ class WPPost(WPObjectModel):
         api = WPApi(self.wp.url)
         data = api.posts(self.id)
         self.save_from_resource(data)
+        if self.wp.enable_log:
+            log = WPLog()
+            log.push(self.wp, 'fetch')
 
     # CUSTOM PROPERTIES #
     @property
