@@ -99,7 +99,7 @@ class WPSite(models.Model):
         self.save_from_resource(api.index())
         if self.enable_log:
             log = WPLog()
-            log.push(self)
+            log.push(self, 'fetch')
 
     def fetch_all(self):
         api = WPApi(self.url)
@@ -108,7 +108,7 @@ class WPSite(models.Model):
         WPPost.objects.get_or_create_from_resource_list(self, data)
         if self.enable_log:
             log = WPLog()
-            log.push(self)
+            log.push(self, 'fetch_all')
 
 
 class WPUser(WPObjectModel):
@@ -267,6 +267,7 @@ class WPLog(models.Model):
     """Log api communications."""
     wp = models.ForeignKey('WPSite')
     timestamp = models.DateTimeField(auto_now_add=True)
+    action = models.CharField(max_length=30)  # TODO use choices so it's easier to filter in admin
 
     def __unicode__(self):
         return u'{} {}'.format(self.up, self.timestamp)
@@ -275,8 +276,9 @@ class WPLog(models.Model):
         ordering = ('-timestamp', )
 
     # CUSTOM METHODS #
-    def push(self, wp):
+    def push(self, wp, action):
         """Generic way to create a log entry."""
         # TODO put this on the manager after I figure out what I'm logging
         self.wp = wp
+        self.action = action
         self.save()
