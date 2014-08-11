@@ -97,18 +97,16 @@ class WPSite(models.Model):
     def fetch(self):
         api = WPApi(self.url)
         self.save_from_resource(api.index())
-        if self.enable_log:
-            log = WPLog()
-            log.push(self, 'fetch', api.response.text)
+        log = WPLog()
+        log.push(self, 'fetch', api.response.text)
 
     def fetch_all(self):
         api = WPApi(self.url)
         self.save_from_resource(api.index())
         data = api.posts()
         WPPost.objects.get_or_create_from_resource_list(self, data)
-        if self.enable_log:
-            log = WPLog()
-            log.push(self, 'fetch_all', api.response.text)
+        log = WPLog()
+        log.push(self, 'fetch_all', api.response.text)
 
 
 class WPUser(WPObjectModel):
@@ -251,9 +249,8 @@ class WPPost(WPObjectModel):
         api = WPApi(self.wp.url)
         data = api.posts(self.id)
         self.save_from_resource(data)
-        if self.wp.enable_log:
-            log = WPLog()
-            log.push(self.wp, 'fetch', api.response.text)
+        log = WPLog()
+        log.push(self.wp, 'fetch', api.response.text)
 
     # CUSTOM PROPERTIES #
     @property
@@ -285,6 +282,8 @@ class WPLog(models.Model):
         """Generic way to create a log entry."""
         # TODO put this on the manager after I figure out what I'm logging
         self.wp = wp
+        if not wp.enable_log:
+            return
         self.action = action
         self.body = body
         self.save()

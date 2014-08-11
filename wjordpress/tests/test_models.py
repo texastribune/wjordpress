@@ -59,6 +59,18 @@ class WPSiteTest(WPTestCase):
         # assert log entry was created
         self.assertTrue(WPLog.objects.count())
 
+    def test_fetch_does_creates_log_when_disabled(self):
+        # setup
+        self.site.enable_log = False
+        # assert we started with no log entries
+        self.assertEqual(WPLog.objects.count(), 0)
+        with mock.patch('wjordpress.models.WPApi') as mock_api:
+            mock_api.return_value = mock_api  # simplify the mock
+            mock_api.index.return_value = self.mock_data
+            self.site.fetch()
+        # assert log entry was created
+        self.assertEqual(WPLog.objects.count(), 0)
+
     def test_fetch_all_creates_log(self):
         # assert we started with no log entries
         self.assertEqual(WPLog.objects.count(), 0)
