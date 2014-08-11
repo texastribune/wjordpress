@@ -1,4 +1,5 @@
 import json
+import mock
 import os
 
 from . import WPTestCase
@@ -6,6 +7,7 @@ from ..factories import (
     WPSiteFactory, WPUserFactory, WPTagFactory, WPCategoryFactory,
     WPPostFactory,
 )
+from ..models import WPLog
 
 
 BASE_DIR = os.path.dirname(__file__)
@@ -24,6 +26,12 @@ class WPObjectModelTest(WPTestCase):
 
 
 class WPSiteTest(WPTestCase):
+    # not a very good test, should use real data
+    mock_data = {
+        'name': 'hello',
+        'description': 'world',
+    }
+
     def setUp(self):
         self.site = WPSiteFactory()
         super(WPTestCase, self).setUp()
@@ -37,14 +45,30 @@ class WPSiteTest(WPTestCase):
         self.assertTrue(self.site.hook_url.startswith('/'))
 
     def test_save_from_resource_works(self):
-        # not a very good test, should use real data
-        mock_data = {
-            'name': 'hello',
-            'description': 'world',
-        }
-        self.site.save_from_resource(mock_data)
+        self.site.save_from_resource(self.mock_data)
         self.assertEqual(self.site.name, 'hello')
         self.assertEqual(self.site.description, 'world')
+
+    def test_fetch_creates_log(self):
+        # assert we started with no log entries
+        self.assertEqual(WPLog.objects.count(), 0)
+        with mock.patch('wjordpress.models.WPApi') as mock_api:
+            mock_api.return_value = mock_api  # simplify the mock
+            mock_api.index.return_value = self.mock_data
+            self.site.fetch()
+        # assert log entry was created
+        self.assertTrue(WPLog.objects.count())
+
+    def test_fetch_all_creates_log(self):
+        # assert we started with no log entries
+        self.assertEqual(WPLog.objects.count(), 0)
+        with mock.patch('wjordpress.models.WPApi') as mock_api:
+            mock_api.return_value = mock_api  # simplify the mock
+            mock_api.index.return_value = self.mock_data
+            mock_api.posts.return_value = []
+            self.site.fetch_all()
+        # assert log entry was created
+        self.assertTrue(WPLog.objects.count())
 
 
 class WPUserTest(WPTestCase):

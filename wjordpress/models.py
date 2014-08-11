@@ -97,12 +97,18 @@ class WPSite(models.Model):
     def fetch(self):
         api = WPApi(self.url)
         self.save_from_resource(api.index())
+        if self.enable_log:
+            log = WPLog()
+            log.push(self)
 
     def fetch_all(self):
         api = WPApi(self.url)
         self.save_from_resource(api.index())
         data = api.posts()
         WPPost.objects.get_or_create_from_resource_list(self, data)
+        if self.enable_log:
+            log = WPLog()
+            log.push(self)
 
 
 class WPUser(WPObjectModel):
@@ -261,3 +267,16 @@ class WPLog(models.Model):
     """Log api communications."""
     wp = models.ForeignKey('WPSite')
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return u'{} {}'.format(self.up, self.timestamp)
+
+    class Meta:
+        ordering = ('-timestamp', )
+
+    # CUSTOM METHODS #
+    def push(self, wp):
+        """Generic way to create a log entry."""
+        # TODO put this on the manager after I figure out what I'm logging
+        self.wp = wp
+        self.save()
