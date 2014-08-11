@@ -3,8 +3,8 @@ import os
 
 from . import WPTestCase
 from ..factories import WPSiteFactory, WPPostFactory
-from ..managers import WPPostManager
-from ..models import WPUser, WPTag, WPCategory, WPPost
+from ..managers import WPPostManager, WPLogManager
+from ..models import WPUser, WPTag, WPCategory, WPPost, WPLog
 
 BASE_DIR = os.path.dirname(__file__)
 
@@ -71,3 +71,14 @@ class WPPostManagerTest(WPTestCase):
         self.assertEqual(WPCategory.objects.count(), 7)
         # assert tags were created
         self.assertEqual(WPTag.objects.count(), 14)
+
+
+class WPLogManagerTest(WPTestCase):
+    def test_push_works(self):
+        self.assertIsInstance(WPLog.objects, WPLogManager)
+        self.assertEqual(WPLog.objects.count(), 0)
+        wp_site = WPSiteFactory()
+        with self.assertNumQueries(1):
+            WPLog.objects.push(wp_site, 'test')
+        # assert one log entry created
+        self.assertEqual(WPLog.objects.count(), 1)

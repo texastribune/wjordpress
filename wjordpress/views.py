@@ -23,9 +23,8 @@ class HookPressEndpoint(View):
         logger.info(u'Hook Triggered: {}'.format(hook_used), extra={
             'request': request,
         })
-        log = models.WPLog()
-        # TODO clean up body so it's more useful
-        log.push(site, 'hook', request.POST)
+        # TODO clean up request.POST body so it's more useful
+        models.WPLog.objects.push(site, 'hook', request.POST)
         if hook_used == 'save_post':
             try:
                 post = models.WPPost.objects.get(

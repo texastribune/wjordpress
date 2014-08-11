@@ -97,16 +97,14 @@ class WPSite(models.Model):
     def fetch(self):
         api = WPApi(self.url)
         self.save_from_resource(api.index())
-        log = WPLog()
-        log.push(self, 'fetch', api.response.text)
+        WPLog.objects.push(self, 'fetch', api.response.text)
 
     def fetch_all(self):
         api = WPApi(self.url)
         self.save_from_resource(api.index())
         data = api.posts()
         WPPost.objects.get_or_create_from_resource_list(self, data)
-        log = WPLog()
-        log.push(self, 'fetch_all', api.response.text)
+        WPLog.objects.push(self, 'fetch_all', api.response.text)
 
 
 class WPUser(WPObjectModel):
@@ -249,8 +247,7 @@ class WPPost(WPObjectModel):
         api = WPApi(self.wp.url)
         data = api.posts(self.id)
         self.save_from_resource(data)
-        log = WPLog()
-        log.push(self.wp, 'fetch', api.response.text)
+        WPLog.objects.push(self.wp, 'fetch', api.response.text)
 
     # CUSTOM PROPERTIES #
     @property
@@ -270,20 +267,12 @@ class WPLog(models.Model):
     action = models.CharField(max_length=30)  # TODO use choices so it's easier to filter in admin
     body = models.TextField(default=u'')
 
+    # MANAGERS #
+    objects = managers.WPLogManager()
+
     def __unicode__(self):
         return u'{} {}'.format(self.wp, self.timestamp)
 
     class Meta:
         ordering = ('-timestamp', )
         verbose_name = 'log'
-
-    # CUSTOM METHODS #
-    def push(self, wp, action, body=u''):
-        """Generic way to create a log entry."""
-        # TODO put this on the manager after I figure out what I'm logging
-        self.wp = wp
-        if not wp.enable_log:
-            return
-        self.action = action
-        self.body = body
-        self.save()
