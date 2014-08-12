@@ -1,0 +1,17 @@
+{% comment %}
+  Markup for a widget that gives a quick list of recent posts.
+  TODO Better markup pending real-world use.
+{% endcomment %}
+<aside class="wjidget-container">
+  {% for object in object_list %}
+    <article>
+      <h1 class="wjidget-title">{{ object.title|safe }}</h1>
+      {% if object.featured_image %}
+        <img class="wjidget-art" src="{{ object.featured_image.images.thumbnail }}" alt="">
+      {% endif %}
+      <div class="wjidget-excerpt">
+        {{ object.excerpt|safe }}
+      </div>
+    </article>
+  {% endfor %}
+</aside>
