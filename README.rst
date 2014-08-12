@@ -20,61 +20,8 @@ automatically
 .. _WordPress: http://wordpress.org/
 
 
-WordPress Setup
----------------
-
-Once you have a WordPress site setup, you need to make sure it has the `JSON
-REST API`_ plugin installed and activated. That's it! If you want real-time
-updates, you'll need the HookPress_ plugin.
-
-.. _JSON REST API: http://wordpress.org/plugins/json-rest-api/
-.. _HookPress: http://wordpress.org/plugins/hookpress/
-
-
-Django Setup
-------------
-
-**Install into your environment**::
-
-    # for the latest "stable"
-    pip install wjordpress
-
-    # if live dangerously
-    pip install https://github.com/texastribune/wjordpress/archive/master.tar.gz
-
-**Install into your Django project**::
-
-    INSTALLED_APPS = [
-        # ... your other installed apps
-        'wjordpress',
-    ]
-
-**Create the database tables**::
-
-    # python manage.py migrate wjordpress  # TODO
-    python manage.py syncdb
-
-**Add a WordPress site**:
-
-In your Django admin, add a new site in ``Wjordpress -> Sites``:
-
-.. image:: images/admin.png
-
-Just enter the url to the WordPress blog and save.
-
-
-WordPress HookPress Setup
-`````````````````````````
-
-Setting this up will trigger updates in real-time as you edit content in
-WordPress.
-
-1. Install the plugin
-2. add a ``save_post`` hook to the hook url the Django admin shows for the
-   site.
-3. Make sure the ``ID`` field is sent.
-
-You can also do manual syncs with ``manage.py wjordpress_fetch``.
+See the `ReadTheDocs site <http://wjordpress.readthedocs.org/en/latest/>`_ for
+the latest docs.
 
 
 Scenarios
