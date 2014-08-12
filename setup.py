@@ -2,7 +2,8 @@ from setuptools import setup
 
 setup(
     name='wjordpress',
-    version='0.1.0',
+    # when bumping versions, also update __init__ and changelog
+    version='0.2.0',
     author='Chris Chang',
     author_email='cchang@texastribune.org',
     url='https://github.com/texastribune/wjordpress',
