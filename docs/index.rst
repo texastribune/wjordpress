@@ -96,3 +96,14 @@ template HTML you would add something like::
 
 You need to add your own css to style the widget. All the css class names are
 namespaced with the ``wjordpress-`` prefix.
+
+
+Using Your Own Django Models
+''''''''''''''''''''''''''''
+
+If you want to sync WordPress content to your own models, you can write
+``post_save`` signals. For an example, see the models_ and signals_ in the
+example app.
+
+.. _models: https://github.com/texastribune/wjordpress/blob/master/example_project/content/models.py
+.. _signals: https://github.com/texastribune/wjordpress/blob/master/example_project/content/signals.py
