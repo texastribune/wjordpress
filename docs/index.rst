@@ -8,6 +8,7 @@ Contents:
 
    prior_art
    quirks
+   changelog
 
 
 Since time immemorial, there has been effort after effort to make the Django
