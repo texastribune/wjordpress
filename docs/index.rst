@@ -51,6 +51,8 @@ Adding your first WordPress site
 2. For the URL input, use the same url you'd use to browse to the site
 3. Save. Whenever you save a site in admin, the most recent 10 posts will be
    pulled.
+4. You can add additional WordPress sites so one Django site can integrate with
+   many WordPress sites.
 
 
 Next Steps
@@ -71,3 +73,25 @@ Manually sync the Django site
 '''''''''''''''''''''''''''''
 
 Run the ``manage.py wjordpress_fetch`` management command.
+
+
+Inspect communication between Django and WordPress
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+If you enabled logging when you added your WordPress site (this is on by
+default), you can see what communication has occurred between the two in the
+Django Admin at Wjordpress > Logs.
+
+
+Embedding a WordPress site
+''''''''''''''''''''''''''
+
+Wjordpress comes with a templatetag so you can quickly insert a widget of
+recent posts. If your WordPress site was called "Mollusk Life", in your Django
+template HTML you would add something like::
+
+    {% load wjidget from wjordpress %}
+    {% wjidget "Mollusk Life" limit=5 %}
+
+You need to add your own css to style the widget. All the css class names are
+namespaced with the ``wjordpress-`` prefix.
