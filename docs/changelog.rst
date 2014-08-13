@@ -3,6 +3,7 @@ Changelog
 
 dev
 ---
+* Fix this did not work in Python3
 
 0.2.0
 -----

@@ -16,3 +16,4 @@ factory-boy==2.4.1
 mock==1.0.1
 pytz==2014.4
 six==1.7.3
+responses==0.2.2
