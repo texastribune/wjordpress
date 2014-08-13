@@ -11,7 +11,9 @@ TODO move out here! or use someone else's Python SDK. I'm lazy.
 docs: https://github.com/WP-API/WP-API/blob/master/docs/guides/getting-started.md
 """
 import logging
+
 import requests
+import six
 
 logger = logging.getLogger(__name__)
 
@@ -94,7 +96,7 @@ class WPApi(object):
             # get a collection
             return self.get('posts')
         else:
-            return self.get('posts', unicode(wp_id))
+            return self.get('posts', six.text_type(wp_id))
 
     def users(self):
         """
