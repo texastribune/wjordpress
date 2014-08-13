@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='wjordpress',
-    # when bumping versions, also update __init__ and changelog
+    # when bumping versions, also update __init__, sphinx config, and changelog
     version='0.2.0',
     author='Chris Chang',
     author_email='cchang@texastribune.org',
