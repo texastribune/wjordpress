@@ -4,9 +4,10 @@ Wjordpress
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    prior_art
+   webhooks
    quirks
    changelog
 
@@ -67,7 +68,7 @@ If you installed the HookPress_ WordPress plugin, you can set up a
 update a post. In the Django Admin change list for Wjordpress sites, there's a
 column, "Hook", for the url to use as the webhook url. In the WordPress admin,
 add a ``save_post`` hook to this url. Make sure the ``ID`` field is sent (this
-happens by default).
+happens by default). See the :doc:`webhooks` page for more detail.
 
 
 Manually sync the Django site
