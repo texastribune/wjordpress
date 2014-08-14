@@ -37,6 +37,14 @@ Adding Wjordpress to your Django Project
 3. Initialize database tables using ``manage.py syncdb``. *Because the project
    is still in alpha, migrations have not been checked in.*
 
+4. (Optional) For webhook support, add a route to Wjordpress's urls::
+
+    urlpatterns = patterns('',
+        # ... your other url root patterns
+        url(r'^_hooks/', include('wjordpress.urls',
+            namespace='wjordpress', app_name='wjordpress')),
+    )
+
 Setting Up Existing WordPress Site
 ''''''''''''''''''''''''''''''''''
 

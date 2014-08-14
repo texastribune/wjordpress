@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.core.urlresolvers import NoReverseMatch
 
 from . import models
 
@@ -23,8 +24,11 @@ class WPSiteAdmin(admin.ModelAdmin):
 
         Requires HookPress: http://wordpress.org/plugins/hookpress/
         """
-        return (u'<a href="{}" title="Add a save_post hook with the ID">'
-            'Webhook</a>'.format(obj.hook_url))
+        try:
+            return (u'<a href="{}" title="Add a save_post hook with the ID">'
+                'Webhook</a>'.format(obj.hook_url))
+        except NoReverseMatch:
+            return ''
     hook.allow_tags = True
 admin.site.register(models.WPSite, WPSiteAdmin)
 
