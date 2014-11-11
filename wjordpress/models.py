@@ -246,8 +246,8 @@ class WPPost(WPObjectModel):
     def fetch(self):
         api = WPApi(self.wp.url)
         data = api.posts(self.id)
-        self.save_from_resource(data)
         WPLog.objects.push(self.wp, 'fetch', api.response.text)
+        WPPost.objects.get_or_create_from_resource(self.wp, data)
 
     # CUSTOM PROPERTIES #
     @property

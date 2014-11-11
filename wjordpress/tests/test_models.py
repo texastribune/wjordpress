@@ -119,6 +119,7 @@ class WPPostTest(WPTestCase):
         with mock.patch('wjordpress.models.WPApi') as mock_api:
             mock_api.return_value = mock_api  # simplify the mock
             mock_api.posts.return_value = {}
-            self.post.fetch()
+            with mock.patch('wjordpress.models.WPPost.objects.get_or_create_from_resource'):
+                self.post.fetch()
         # assert log entry was created
         self.assertTrue(WPLog.objects.count())

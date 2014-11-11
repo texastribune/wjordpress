@@ -36,6 +36,9 @@ class HookPressEndpointTest(WPTestCase):
         self.assertEqual(response.status_code, 200)
         # assert this post now exists
         self.assertTrue(WPPost.objects.filter(wp=site, id=521).exists())
+        post = WPPost.objects.filter(wp=site, id=521).get()
+        # assert foreign relations were created
+        self.assertTrue(post.author)
 
     def test_post_creates_log(self):
         # assert we started with no log entries
