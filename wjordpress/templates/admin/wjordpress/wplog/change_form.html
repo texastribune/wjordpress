@@ -1,0 +1,15 @@
+{% extends "admin/change_form.html" %}
+
+
+{% block footer %}{{ block.super }}
+  <script>
+    // Display the body as JSON in a new tab
+    (function ($) {
+      var $field = $('div.field-body p');
+      var bodyData = $field.html();
+      $('<p><a href="data:application/json;base64,' + btoa(bodyData) + '" target="_blank">' +
+        'View JSON in New Tab</a><p>')
+        .insertBefore($field);
+    })(django.jQuery);
+  </script>
+{% endblock %}

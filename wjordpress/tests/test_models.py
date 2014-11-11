@@ -1,4 +1,3 @@
-import json
 import mock
 import os
 
@@ -11,18 +10,6 @@ from ..models import WPLog
 
 
 BASE_DIR = os.path.dirname(__file__)
-
-
-class WPObjectModelTest(WPTestCase):
-    def test_save_from_resource_works(self):
-        # WISHLIST assert WPPostFactory.save_from_resource is from WPObjectModel
-        post = WPPostFactory()
-        self.assertFalse(post.title)
-
-        data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts_521.json')))
-        with self.assertNumQueries(1):
-            post.save_from_resource(data)
-        self.assertTrue(post.title)
 
 
 class WPSiteTest(WPTestCase):
@@ -119,6 +106,7 @@ class WPPostTest(WPTestCase):
         with mock.patch('wjordpress.models.WPApi') as mock_api:
             mock_api.return_value = mock_api  # simplify the mock
             mock_api.posts.return_value = {}
-            self.post.fetch()
+            with mock.patch('wjordpress.models.WPPost.objects.get_or_create_from_resource'):
+                self.post.fetch()
         # assert log entry was created
         self.assertTrue(WPLog.objects.count())
