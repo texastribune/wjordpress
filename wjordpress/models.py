@@ -10,7 +10,6 @@ reflect some real schema limit.
 """
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.timezone import now
 
 from . import managers
 from .api import WPApi
@@ -40,19 +39,6 @@ class WPObjectModel(models.Model):
         Fetch this object from the api and update.
         """
         raise NotImplementedError
-
-    def save_from_resource(self, data):
-        """
-        Takes the data from the api and applies it back to the instance.
-
-        Similar to `WPManager.get_or_create_from_resource`.
-        """
-        field_names = self._meta.get_all_field_names()
-        obj_data = {k: v for k, v in data.items() if k in field_names}
-        obj_data['synced_at'] = now()
-        # WISHLIST log what changed
-        self.__dict__.update(obj_data)
-        self.save()
 
 
 ##########
