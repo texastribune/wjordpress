@@ -22,6 +22,7 @@ from .dj_exten_jsonfield import JSONField
 
 class WPObjectModel(models.Model):
     wp = models.ForeignKey('WPSite')
+    # not the primary key (see `dj_id`) so fields match JSON response
     id = models.PositiveIntegerField()
 
     # bookkeepping

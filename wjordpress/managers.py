@@ -7,12 +7,17 @@ import logging
 class WPManager(models.Manager):
     def get_or_create_from_resource(self, site, data):
         """
-        Get or create an instance based on the json.
+        Get and create or update an instance based on the json.
         """
         field_names = self.model._meta.get_all_field_names()
         obj_data = {k: v for k, v in data.items() if k in field_names}
         obj_data['synced_at'] = now()
-        return self.get_or_create(wp=site, id=data['ID'], defaults=obj_data)
+        obj, created = self.get_or_create(wp=site, id=data['ID'], defaults=obj_data)
+        if not created:
+            obj.__dict__.update(obj_data)
+            # Always dirty because 'synced_at' changes
+            obj.save()
+        return obj, created
 
     def get_or_create_from_resource_list(self, site, data):
         """

@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import json
 import os
 
@@ -27,6 +29,14 @@ class WPManagerTest(WPTestCase):
         }
         user, created = WPUser.objects.get_or_create_from_resource(site, data)
         self.assertTrue(created)
+        self.assertEqual(user.id, 1337)
+        self.assertEqual(user.username, 'gregor')
+
+        data['username'] = 'samsa'
+        user, created = WPUser.objects.get_or_create_from_resource(site, data)
+        self.assertFalse(created)
+        self.assertEqual(user.id, 1337)
+        self.assertEqual(user.username, 'samsa')
 
 
 class WPPostManagerTest(WPTestCase):
@@ -60,7 +70,7 @@ class WPPostManagerTest(WPTestCase):
         self.assertIsInstance(WPPost.objects, WPPostManager)
         data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts_502.json')))
         site = WPSiteFactory()
-        with self.assertNumQueries(39):
+        with self.assertNumQueries(40):
             post, created = WPPost.objects.get_or_create_from_resource(
                 site, data)
         self.assertTrue(created)
@@ -82,7 +92,7 @@ class WPPostManagerTest(WPTestCase):
         self.assertIsInstance(WPPost.objects, WPPostManager)
         data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts.json')))
         site = WPSiteFactory()
-        with self.assertNumQueries(215):
+        with self.assertNumQueries(236):
             WPPost.objects.get_or_create_from_resource_list(site, data)
         # assert posts were created
         self.assertEqual(WPPost.objects.count(), 9)
