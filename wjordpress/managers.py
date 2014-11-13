@@ -14,7 +14,9 @@ class WPManager(models.Manager):
         obj_data['synced_at'] = now()
         obj, created = self.get_or_create(wp=site, id=data['ID'], defaults=obj_data)
         if not created:
-            obj.__dict__.update(obj_data)
+            # obj.__dict__.update does not update foreign keys, but this does
+            for k, v in obj_data.items():
+                setattr(obj, k, v)
             # Always dirty because 'synced_at' changes
             obj.save()
         return obj, created

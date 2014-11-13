@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import json
 import os
 
@@ -36,6 +38,20 @@ class HookPressEndpointTest(WPTestCase):
         self.assertEqual(response.status_code, 200)
         # assert this post now exists
         self.assertTrue(WPPost.objects.filter(wp=site, id=521).exists())
+        post = WPPost.objects.filter(wp=site, id=521).get()
+        self.assertTrue(post.author)
+
+        # Contrived example: author changes locally, will it get set again?
+        post.author = None
+        post.save()
+
+        data = json.load(open(os.path.join(BASE_DIR, 'support', 'posts_521.json')))
+        with mock.patch('wjordpress.models.WPApi') as MockApi:
+            # got to be a better syntax for this
+            MockApi.return_value = mock.MagicMock(**{'posts.return_value': data})
+            response = self.view.post(request, site.pk)
+        # sanity check
+        self.assertEqual(response.status_code, 200)
         post = WPPost.objects.filter(wp=site, id=521).get()
         # assert foreign relations were created
         self.assertTrue(post.author)
