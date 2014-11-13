@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.2.2
+-----
+
+* Fix how things like author weren't updated when updating posts from webhook
+
 0.2.1
 -----
 
