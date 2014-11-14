@@ -7,21 +7,21 @@ Wjordpress
    :target: https://coveralls.io/r/texastribune/wjordpress
 
 Wjordpress is a reusable app for Django_ that allows you to use WordPress_ as
-your editing interface and Django_ for your presentation.
-
-With Wjordpress, you can interact with WordPress content as if it had been
-entered in the Django admin. Wjordpress does not pretend to be WordPress and
-does not provide any presentation. After the initial link, it's a "Fire-and-
-forget" system. The Wjordpress Django admin interface is not something you'll
-have to mess with on a daily basis. Changes made in WordPress will
-automatically
+your editing interface and use Django_ for your presentation. You an also hook
+multiple WordPress sites to a single Django project.
 
 .. _Django: https://www.djangoproject.com/
 .. _WordPress: http://wordpress.org/
 
+You choose your level of integration. You can do a one time import, periodic
+sync, manual sync, or near real-time updates using a web hook.
+
+You can also start using WordPress content immediately without writing any
+urls, views, or templates with the built in templatetag.
+
 
 See the `ReadTheDocs site <http://wjordpress.readthedocs.org/en/latest/>`_ for
-the latest docs.
+more.
 
 
 Scenarios
